@@ -1,0 +1,67 @@
+{
+  "@@locale": "en_US",
+  "allOffers": "All Offers",
+  "noMatch": "No Match Result",
+  "callNow": "Call Now",
+  "whatsapp": "Whatsapp",
+  "map": "Map",
+  "emailus": "Email Us",
+  "carSpecification": "Car Specifications",
+  "carMake": "Car Make",
+  "carclass": "Class",
+  "model": "Model",
+  "type": "Type",
+  "incType": "Inc. Type",
+  "deliveryToYouLcation":"Delivery to you location",
+  "rentingreq": "Renting requirements",
+  "drivinglicens": "Driving License",
+  "deposit": "Deposit",
+  "minAge": "Minimum Age",
+  "dontHaveProg": "You don't have {progName}",
+  "advanceSearch": "Advance Search",
+  "menu": "Menu",
+  "home": "Home",
+  "aboutus": "About us",
+  "signIn": "Sign In",
+  "logout": "Log out",
+  "contactus": "Contact Us",
+  "profile": "Profile",
+  "greeting": "Hello {name}",
+  "newCar": "Add new car",
+  "cardetails": "Car Details",
+  "price": "Price",
+  "age": "Age",
+  "drivingLicences": "Driving Licences",
+  "deposit": "Deposit",
+  "advertisementType": "Advertisement Type",
+  "submit": "Submit",
+  "email": "Email",
+  "password": "Password",
+  "forgetPass": "Forget password?",
+  "retrieve": "Retrieve",
+  "editprofile": "Edit Profile",
+  "userName": "User Name",
+  "name": "Name",
+"phone": "Phone",
+  "city": "City",
+  "expDate": "Exp Date",
+  "resetPass": "Change Password",
+  "currentPass": "Current Password",
+  "newPassword": "New Password",
+  "confirmPassword": "Confirm Password"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
