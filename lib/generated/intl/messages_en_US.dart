@@ -60,6 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "name" : MessageLookupByLibrary.simpleMessage("Name"),
     "newCar" : MessageLookupByLibrary.simpleMessage("Add new car"),
     "newPassword" : MessageLookupByLibrary.simpleMessage("New Password"),
+    "no" : MessageLookupByLibrary.simpleMessage("No"),
     "noMatch" : MessageLookupByLibrary.simpleMessage("No Match Result"),
     "password" : MessageLookupByLibrary.simpleMessage("Password"),
     "phone" : MessageLookupByLibrary.simpleMessage("Phone"),
@@ -72,6 +73,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "submit" : MessageLookupByLibrary.simpleMessage("Submit"),
     "type" : MessageLookupByLibrary.simpleMessage("Type"),
     "userName" : MessageLookupByLibrary.simpleMessage("User Name"),
-    "whatsapp" : MessageLookupByLibrary.simpleMessage("Whatsapp")
+    "whatsapp" : MessageLookupByLibrary.simpleMessage("Whatsapp"),
+    "yes" : MessageLookupByLibrary.simpleMessage("Yes")
   };
 }

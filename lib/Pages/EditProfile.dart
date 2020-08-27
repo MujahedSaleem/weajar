@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weajar/Pages/resetPassword.dart';
 import 'package:weajar/Pages/weCarList.dart';
@@ -5,6 +6,7 @@ import 'package:weajar/components/AppBar.dart';
 import 'package:weajar/components/HorzLineDivider.dart';
 import 'package:weajar/components/Loader.dart';
 import 'package:weajar/components/TextWithDropDown.dart';
+import 'package:weajar/components/TextWithText.dart';
 import 'package:weajar/components/TextWithTextField.dart';
 import 'package:weajar/generated/l10n.dart';
 import 'package:weajar/model/Isearch.dart';
@@ -22,9 +24,8 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   var auth = AuthenticationService();
-  TextEditingController _userNameController;
+
   TextEditingController _nameController;
-  TextEditingController _emailController;
   TextEditingController _phoneController;
   LoginUser currentUser;
   final _cityFetcher = CitiesFetcher();
@@ -37,17 +38,14 @@ class _EditProfileState extends State<EditProfile> {
     // TODO: implement initState
     super.initState();
     if (auth.IsTokenNotActive()) auth.signOut();
-    _userNameController = new TextEditingController();
-    _nameController = new TextEditingController();
-    _emailController = new TextEditingController();
-    _phoneController = new TextEditingController();
-    _userNameController = new TextEditingController();
 
-      currentUser = auth.getCurrentUser();
-      _userNameController.text = currentUser.Username;
-      _nameController.text = currentUser.Name;
-      _emailController.text = currentUser.Email;
-      _phoneController.text = currentUser.Phone;
+    _nameController = new TextEditingController();
+    _phoneController = new TextEditingController();
+
+    currentUser = auth.getCurrentUser();
+    currentUser.Username;
+    _nameController.text = currentUser.Name;
+    _phoneController.text = currentUser.Phone;
 
     _cityFetcher.fetchCities().then((value) {
       setState(() {
@@ -94,9 +92,12 @@ class _EditProfileState extends State<EditProfile> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    TextWithTextfield(
-                                      controlelr: _userNameController,
-                                      text: S.of(context).userName,
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 15),
+                                      child: TextWithText(
+                                          text: S.of(context).userName,
+                                          text2: currentUser.Username),
                                     ),
                                     HorzLineDivider(
                                       color: Colors.black38,
@@ -110,10 +111,14 @@ class _EditProfileState extends State<EditProfile> {
                                       color: Colors.black38,
                                       width: MediaQuery.of(context).size.width,
                                     ),
-                                    TextWithTextfield(
-                                      controlelr: _emailController,
-                                      text: S.of(context).email,
-                                    ),
+                                    Padding(
+                                      padding:
+                                      EdgeInsets.symmetric(vertical: 15),
+                                      child: TextWithText(
+                                          text: S.of(context).email,
+                                          text2: currentUser.Email),
+                                    )
+                                   ,
                                     HorzLineDivider(
                                       color: Colors.black38,
                                       width: MediaQuery.of(context).size.width,
@@ -206,12 +211,8 @@ class _EditProfileState extends State<EditProfile> {
                                                 color: Color.fromARGB(
                                                     250, 237, 56, 38))),
                                         onPressed: () {
-                                          currentUser.Username =
-                                              _userNameController.value.text;
                                           currentUser.Name =
                                               _nameController.value.text;
-                                          currentUser.Email =
-                                              _emailController.value.text;
                                           currentUser.Phone =
                                               _phoneController.value.text;
                                           currentUser.chnaged = true;

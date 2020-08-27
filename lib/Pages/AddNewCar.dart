@@ -14,7 +14,7 @@ import 'package:weajar/model/Isearch.dart';
 import 'package:weajar/model/car.dart';
 import 'package:weajar/service/CitiesFetcher.dart';
 import 'package:weajar/service/itemFetcher.dart';
-import 'package:weajar/viewModels/FullCarInfo.dart';
+import 'package:mime_type/mime_type.dart';
 
 class AddEditCar extends StatefulWidget {
   static const String routeName = "addeditcar";
@@ -486,7 +486,13 @@ class _AddEditCarState extends State<AddEditCar> {
                                 var car = Car(
                                   CarMakeID:carMaker,
                                   CarClassID:carClass,
-                                  CarImages: tempImage.where((element) => element!=null).map((e) => CarImage(ImageStatus: 1,ImageURL: base64Encode(e.readAsBytesSync()))).toList(),
+                                  CarImages: tempImage.where((element) => element!=null).map((e)  {
+                                    var filePath = tempImage[0].path.split('/');
+                                    var fileName = filePath[filePath.length-1];
+
+                                    return CarImage(ImageStatus: 1,ImageURL:'data:${mime(fileName)};base64,'+base64Encode(e.readAsBytesSync()));
+
+                                  }).toList(),
                                   Model:int.parse(model),
                                   Price:double.parse(_priceControlelr.value.text.trim()),
                                   CityID:city,

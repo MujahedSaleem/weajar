@@ -52,7 +52,7 @@ class ItemFetcher {
       'content-type': 'application/json'
     };
     var result = await client.post("$_baseUrl/Create",
-        body: car.toJson().toString(), headers: header);
+        body:JsonEncoder().convert( car.toJson()), headers: header);
     if (result.statusCode == 200)
       return true;
     return false;

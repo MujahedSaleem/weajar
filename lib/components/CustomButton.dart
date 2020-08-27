@@ -9,20 +9,21 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ButtonTheme(
-        minWidth: MediaQuery.of(context).size.width/2.5,
-        height: 50,
+        minWidth: MediaQuery.of(context).size.width/5,
+        height: 60,
+        shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)) ,
         buttonColor:Colors.white ,
         child: RaisedButton(
-          padding: EdgeInsets.all(0),
+          padding: EdgeInsets.all(5),
           onPressed: onPressed,
-          child: Row(
+          child: Column(
             mainAxisAlignment:
             MainAxisAlignment.start,
             children: [
               Image.asset(icon,
-                  width: 30),
-              SizedBox(width: 10,),
-              Text(text,style: TextStyle(fontSize: 18),)
+                  width: 20),
+              SizedBox(height: 10,),
+              Text(text,style: TextStyle(fontSize: 14),)
             ],
           ),
         ));

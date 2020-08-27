@@ -21,6 +21,8 @@ dependencies:
   flutter_bloc:
   equatable: ^1.2.4
   jwt_decoder: ^1.0.1
+  mime_type: ^0.3.2
+
   image_picker:
   connectivity:
 

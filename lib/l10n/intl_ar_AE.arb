@@ -48,7 +48,9 @@
   "resetPass": "تغيير كلمة المرور",
   "currentPass": "كلمة السر الحالية ",
   "newPassword": "كلمة السرا لجديدة",
-  "confirmPassword": "تأطيد كلمة السر"
+  "confirmPassword": "تأطيد كلمة السر",
+  "yes": "نعم",
+  "no": "لا"
 
 
 

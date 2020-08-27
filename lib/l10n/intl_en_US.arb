@@ -48,7 +48,9 @@
   "resetPass": "Change Password",
   "currentPass": "Current Password",
   "newPassword": "New Password",
-  "confirmPassword": "Confirm Password"
+  "confirmPassword": "Confirm Password",
+  "yes": "Yes",
+  "no": "No"
 
 
 

@@ -205,11 +205,11 @@ class _WeCarListState extends State<WeCarList>
                                       scaffoldKey.currentState.openDrawer();
                                   }
                                   ,
-                                  actions: () =>
-                                      _navigateAndDisplaySelection(context),
                                 ),
                               ),
-                              Padding(
+                              GestureDetector(onTap: () =>
+                                _navigateAndDisplaySelection(context),
+                              child: Padding(
                                   padding: EdgeInsets.fromLTRB(8, 0, 8, 30),
                                   child: Container(
                                     height: 68,
@@ -225,8 +225,9 @@ class _WeCarListState extends State<WeCarList>
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 1, vertical: 1),
                                       child: TextField(
-                                        controller: _searchQuery,
-                                        onChanged: updateSearchQuery,
+                                        onTap: () =>
+                                            _navigateAndDisplaySelection(context),
+                                        enabled: false,
                                         decoration: InputDecoration(
                                           fillColor: Colors.white,
                                           hintText: 'Search Contacts',
@@ -240,12 +241,17 @@ class _WeCarListState extends State<WeCarList>
                                         ),
                                       ),
                                     ),
-                                  )),
-                            ],
+                                  )))
+                              ],
                           ),
                           filteredRecored != null && filteredRecored.length > 0
                               ? Expanded(
-                                  child: CarList(carList: filteredRecored))
+                                  child: CarList(carList: filteredRecored,onRefresh: (){
+                                    setState(() {
+                                      _loadMore();
+                                      return;
+                                    });
+                                  },))
                               : (_carList == null || _isLoading)
                                   ? Center(
                                       child: Loader(),

@@ -3,13 +3,19 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "gradle.plugin.pl.droidsonroids.gradle.localization:android-gradle-localization-plugin:1.0.15"
+
     }
 }
+apply plugin: "pl.droidsonroids.localization"
 
 allprojects {
     repositories {

@@ -57,6 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "name" : MessageLookupByLibrary.simpleMessage("الإسم"),
     "newCar" : MessageLookupByLibrary.simpleMessage("إضافة سيارة"),
     "newPassword" : MessageLookupByLibrary.simpleMessage("كلمة السرا لجديدة"),
+    "no" : MessageLookupByLibrary.simpleMessage("لا"),
     "noMatch" : MessageLookupByLibrary.simpleMessage("لا يوجد نتيجة لعرضها"),
     "password" : MessageLookupByLibrary.simpleMessage("الرقم السري"),
     "phone" : MessageLookupByLibrary.simpleMessage("رقم الهاتق"),
@@ -69,6 +70,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "submit" : MessageLookupByLibrary.simpleMessage("إضافة"),
     "type" : MessageLookupByLibrary.simpleMessage("النوع "),
     "userName" : MessageLookupByLibrary.simpleMessage("أسم المستخدم"),
-    "whatsapp" : MessageLookupByLibrary.simpleMessage("واتس آب")
+    "whatsapp" : MessageLookupByLibrary.simpleMessage("واتس آب"),
+    "yes" : MessageLookupByLibrary.simpleMessage("نعم")
   };
 }

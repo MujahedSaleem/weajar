@@ -1,7 +1,7 @@
 import 'package:weajar/model/car.dart';
 import 'package:weajar/model/user.dart';
 
-class FullCarInfo {
+class FullCarInfo implements Comparable {
   final int ID;
   final String CarMake;
   final String CarClass;
@@ -61,5 +61,15 @@ class FullCarInfo {
             .toList(),
         CreationDate: DateTime.parse(jsonCar['CreationDate']),
         UpdateDate: DateTime.parse(jsonCar['UpdateDate']));
+  }
+
+  @override
+  int compareTo(other) {
+    // TODO: implement compareTo
+
+    if(this.IsPrime)
+      return -1;
+    else
+      return 1 ;
   }
 }
