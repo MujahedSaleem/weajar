@@ -60,7 +60,7 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldKey,
-        backgroundColor: Color.fromARGB(250, 32, 37, 42),
+        backgroundColor: Color(0xff48484A),
         body: GestureDetector(onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
         }, child: SafeArea(child: LayoutBuilder(
@@ -68,6 +68,7 @@ class _EditProfileState extends State<EditProfile> {
           return Container(
               height: constraints.maxHeight,
               width: MediaQuery.of(context).size.width,
+
               child: SingleChildScrollView(
                   child: _isloading
                       ? Loader()
@@ -80,11 +81,12 @@ class _EditProfileState extends State<EditProfile> {
                                   child: CustomAppBar(
                                       text: S.of(context).editprofile,
                                       icon: Icons.arrow_back_ios,
+                                      iconColor: Colors.white,
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       })),
                               HorzLineDivider(
-                                color: Colors.black38,
+                                color: Color(0xff3D434A),
                                 width: MediaQuery.of(context).size.width,
                               ),
                               Padding(
@@ -100,7 +102,7 @@ class _EditProfileState extends State<EditProfile> {
                                           text2: currentUser.Username),
                                     ),
                                     HorzLineDivider(
-                                      color: Colors.black38,
+                                      color: Color(0xff3D434A),
                                       width: MediaQuery.of(context).size.width,
                                     ),
                                     TextWithTextfield(
@@ -108,7 +110,7 @@ class _EditProfileState extends State<EditProfile> {
                                       text: S.of(context).name,
                                     ),
                                     HorzLineDivider(
-                                      color: Colors.black38,
+                                      color: Color(0xff3D434A),
                                       width: MediaQuery.of(context).size.width,
                                     ),
                                     Padding(
@@ -120,7 +122,7 @@ class _EditProfileState extends State<EditProfile> {
                                     )
                                    ,
                                     HorzLineDivider(
-                                      color: Colors.black38,
+                                      color: Color(0xff3D434A),
                                       width: MediaQuery.of(context).size.width,
                                     ),
                                     TextWithTextfield(
@@ -128,7 +130,7 @@ class _EditProfileState extends State<EditProfile> {
                                       text: S.of(context).phone,
                                     ),
                                     HorzLineDivider(
-                                      color: Colors.black38,
+                                      color: Color(0xff3D434A),
                                       width: MediaQuery.of(context).size.width,
                                     ),
                                     TextWithDropDown(
@@ -138,29 +140,18 @@ class _EditProfileState extends State<EditProfile> {
                                       onChange: (int x) {},
                                     ),
                                     HorzLineDivider(
-                                      color: Colors.black38,
+                                      color: Color(0xff3D434A),
                                       width: MediaQuery.of(context).size.width,
                                     ),
                                     Row(
                                       children: [
-                                        Padding(
-                                          padding:
-                                              EdgeInsets.symmetric(vertical: 5),
-                                          child: Text(
-                                            S.of(context).forgetPass,
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
+
                                         InkWell(
                                           child: Padding(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 5),
                                             child: Text(
-                                              S.of(context).retrieve,
+                                              S.of(context).resetPass,
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),
@@ -201,8 +192,9 @@ class _EditProfileState extends State<EditProfile> {
                                       child: RaisedButton(
                                         color: Color.fromARGB(250, 237, 56, 38),
                                         child: Text(
-                                          "Save",
-                                          style: TextStyle(fontSize: 18),
+                                          S.of(context).save,
+                                          style: TextStyle(fontSize: 18,color: Colors.white),
+
                                         ),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:

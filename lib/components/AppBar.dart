@@ -5,8 +5,9 @@ class CustomAppBar extends StatelessWidget {
   final IconData icon;
   final VoidCallback onPressed;
   final VoidCallback actions;
+  final Color iconColor;
   const CustomAppBar(
-      {Key key, this.text, this.icon, this.onPressed, this.actions})
+      {Key key, this.text, this.icon, this.onPressed, this.actions, this.iconColor})
       : super(key: key);
 
   @override
@@ -17,7 +18,7 @@ class CustomAppBar extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.099,
           child: InkWell(
-            child: Icon(icon),
+            child: Icon(icon,color: iconColor,),
             onTap: onPressed,
           ),
         ),

@@ -7,7 +7,7 @@ class LoginUser {
    DateTime ExpirationDate;
    int ID;
    String ImageURL;
-   bool IsAdmi;
+   bool IsAdmin;
    double Latitude;
   double Longitude;
    String Name;
@@ -26,7 +26,7 @@ class LoginUser {
       this.Password,
       this.ID,
       this.ImageURL,
-      this.IsAdmi,
+      this.IsAdmin,
       this.Latitude,
       this.Longitude,
       this.Name,
@@ -42,7 +42,7 @@ class LoginUser {
         ExpirationDate: loginUser['ExpirationDate'] ==null?null:DateTime.parse(loginUser['ExpirationDate']),
         ID: loginUser['ID'],
         ImageURL: loginUser['ImageURL'],
-        IsAdmi: loginUser['IsAdmi'],
+        IsAdmin: loginUser['IsAdmin'],
         Latitude: loginUser['Latitude'],
         Longitude: loginUser['Longitude'],
         Name: loginUser['Name'],
@@ -59,7 +59,7 @@ class LoginUser {
     'ExpirationDate': this.ExpirationDate ==null?null:(this.ExpirationDate).toString(),
     'ID': this.ID,
     'ImageURL': this.ImageURL,
-    'IsAdmi': this.IsAdmi,
+    'IsAdmi': this.IsAdmin,
     'Latitude': this.Latitude,
     'Longitude': this.Longitude,
     'Name': this.Name,

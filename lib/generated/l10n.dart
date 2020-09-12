@@ -143,10 +143,10 @@ class S {
     );
   }
 
-  /// `Inc. Type`
+  /// `Insurance Type`
   String get incType {
     return Intl.message(
-      'Inc. Type',
+      'Insurance Type',
       name: 'incType',
       desc: '',
       args: [],
@@ -273,10 +273,10 @@ class S {
     );
   }
 
-  /// `Contact Us`
+  /// `Contact Us `
   String get contactus {
     return Intl.message(
-      'Contact Us',
+      'Contact Us ',
       name: 'contactus',
       desc: '',
       args: [],
@@ -303,10 +303,10 @@ class S {
     );
   }
 
-  /// `Add new car`
+  /// `ADD NEW CAR`
   String get newCar {
     return Intl.message(
-      'Add new car',
+      'ADD NEW CAR',
       name: 'newCar',
       desc: '',
       args: [],
@@ -528,6 +528,296 @@ class S {
     return Intl.message(
       'No',
       name: 'no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign Up`
+  String get registration {
+    return Intl.message(
+      'Sign Up',
+      name: 'registration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Already has account?`
+  String get hasAccount {
+    return Intl.message(
+      'Already has account?',
+      name: 'hasAccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Car Price`
+  String get carPrice {
+    return Intl.message(
+      'Car Price',
+      name: 'carPrice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `AED / Day`
+  String get aedday {
+    return Intl.message(
+      'AED / Day',
+      name: 'aedday',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Booked`
+  String get booked {
+    return Intl.message(
+      'Booked',
+      name: 'booked',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status`
+  String get status {
+    return Intl.message(
+      'Status',
+      name: 'status',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Car rent type`
+  String get carrenttype {
+    return Intl.message(
+      'Car rent type',
+      name: 'carrenttype',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm`
+  String get confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `From`
+  String get from {
+    return Intl.message(
+      'From',
+      name: 'from',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To`
+  String get to {
+    return Intl.message(
+      'To',
+      name: 'to',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get all {
+    return Intl.message(
+      'All',
+      name: 'all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Local`
+  String get local {
+    return Intl.message(
+      'Local',
+      name: 'local',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `International`
+  String get International {
+    return Intl.message(
+      'International',
+      name: 'International',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No specific type is required`
+  String get SpecificType {
+    return Intl.message(
+      'No specific type is required',
+      name: 'SpecificType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `AED`
+  String get aed {
+    return Intl.message(
+      'AED',
+      name: 'aed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full`
+  String get full {
+    return Intl.message(
+      'Full',
+      name: 'full',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Third Party`
+  String get third {
+    return Intl.message(
+      'Third Party',
+      name: 'third',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cover photo`
+  String get cover {
+    return Intl.message(
+      'Cover photo',
+      name: 'cover',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My car`
+  String get mycar {
+    return Intl.message(
+      'My car',
+      name: 'mycar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Available`
+  String get available {
+    return Intl.message(
+      'Available',
+      name: 'available',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Premium`
+  String get premium {
+    return Intl.message(
+      'Premium',
+      name: 'premium',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Normal`
+  String get normal {
+    return Intl.message(
+      'Normal',
+      name: 'normal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `WEAJAR is the biggest car rental company in the Middle East. WEAJAR offers an efficient, convenient and elegant way of renting cars to many people and at any time.`
+  String get about1 {
+    return Intl.message(
+      'WEAJAR is the biggest car rental company in the Middle East. WEAJAR offers an efficient, convenient and elegant way of renting cars to many people and at any time.',
+      name: 'about1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Eradicating the conventional ways of renting a car, WE AJAR brings convenience to you at its finest.`
+  String get about2 {
+    return Intl.message(
+      'Eradicating the conventional ways of renting a car, WE AJAR brings convenience to you at its finest.',
+      name: 'about2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dedicated to making car rental as simple as possible, we help customers find the best options to book the perfect car for them.`
+  String get about3 {
+    return Intl.message(
+      'Dedicated to making car rental as simple as possible, we help customers find the best options to book the perfect car for them.',
+      name: 'about3',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We want to bring the world to you. From choosing a suitable car to finding the best price, we want you to have all the options at your fingertips.\n\n"That's why we're focused on making car rental better for everyone. This spirit shines through everything we do.`
+  String get about4 {
+    return Intl.message(
+      'We want to bring the world to you. From choosing a suitable car to finding the best price, we want you to have all the options at your fingertips.\n\n"That\'s why we\'re focused on making car rental better for everyone. This spirit shines through everything we do.',
+      name: 'about4',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Want to Join us? Contact us with pleasure`
+  String get about5 {
+    return Intl.message(
+      'Want to Join us? Contact us with pleasure',
+      name: 'about5',
       desc: '',
       args: [],
     );

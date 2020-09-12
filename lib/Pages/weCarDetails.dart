@@ -62,7 +62,7 @@ class WeCarDetails extends StatelessWidget {
 
     return Scaffold(
         key: scaffoldKey,
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Color(0xFF48484A),
         body: SafeArea(child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
           return Container(
@@ -77,92 +77,85 @@ class WeCarDetails extends StatelessWidget {
                         child: CustomAppBar(
                           text: car.CarMake,
                           icon: Icons.arrow_back_ios,
+                          iconColor: Colors.white,
                           onPressed: () => Navigator.pop(context),
                         )),
                     Stack(
-                      overflow: Overflow.visible,
                       children: [
                         Container(
                           margin: EdgeInsets.only(top: 13, left: 10, right: 10),
-                          child: car.CarImages != null &&
-                                  car.CarImages.length > 0 &&
-                                  car.CarImages.length == 1
-                              ? Image.network(
-                                  'https://api.weajar.com/img/${car.CarImages[0].ImageURL}',
-                                  fit: BoxFit.cover,
-                                  width: 1000.0)
-                              : car.CarImages.length > 1
-                                  ? CustomCarousel(
-                                      list: car.CarImages.map((item) =>
-                                          Container(
-                                            child: Container(
-                                              margin: EdgeInsets.all(5.0),
-                                              child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(5.0)),
-                                                  child: Image.network(
-                                                      'https://api.weajar.com/img/${item.ImageURL}',
-                                                      fit: BoxFit.cover,
-                                                      width: 1000.0)),
-                                            ),
-                                          )).toList(),
-                                    )
-                                  : Image.asset("assets/Img/weAjar.png",
-                                      width: 110, height: 80, fit: BoxFit.fill),
-                        ),
-                        if (car.IsPrime)
-                          Positioned(
-                              left: MediaQuery.of(context).size.width - 100,
-                              child: Container(
-                                child: Image.asset(
-                                    "assets/Img/diamond-transparent.png"),
-                                width: 70,
-                              )),
+                          child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5.0)),
+                              child: car.CarImages != null &&
+                                      car.CarImages.length > 0 &&
+                                      car.CarImages.length == 1
+                                  ? Image.network(
+                                      'https://api.weajar.com/img/${car.CarImages[0].ImageURL}',
+                                      fit: BoxFit.cover,
+                                      width: 1000.0)
+                                  : car.CarImages.length > 1
+                                      ? CustomCarousel(
+                                          list: car.CarImages.map((item) =>
+                                              Container(
+                                                child: Container(
+                                                  margin: EdgeInsets.all(5.0),
+                                                  child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  5.0)),
+                                                      child: Image.network(
+                                                          'https://api.weajar.com/img/${item.ImageURL}',
+                                                          fit: BoxFit.cover,
+                                                          width: 1000.0)),
+                                                ),
+                                              )).toList(),
+                                        )
+                                      : Image.asset("assets/Img/weAjar.png",
+                                          width: 110,
+                                          height: 80,
+                                          fit: BoxFit.fill)),
+                        )
                       ],
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 13, left: 25, right: 25),
-                      child:
-                          Row(
-                            children: [
-                              CustomButton(
-                                  text: S.of(context).callNow,
-                                  icon: 'assets/Img/call.png',
-                                  onPressed: () => launchApp(
-                                      phone: "+971508883337",
-                                      context: context,
-                                      progName: tel)),
-                              CustomButton(
-                                  text: S.of(context).whatsapp,
-                                  icon: 'assets/Img/whatsapp.png',
-                                  onPressed: () => launchApp(
-                                      phone: "+971508883337",
-                                      message: " ",
-                                      context: context,
-                                      progName: whatsApp)),
-                              CustomButton(
-                                  text: S.of(context).map,
-                                  icon: 'assets/Img/map.png',
-                                  onPressed: () => launchApp(
-                                      mapURL:
-                                      "https://goo.gl/maps/rVJ52iHZ6rrwKTyk8",
-                                      context: context,
-                                      progName: map)),
-                              CustomButton(
-                                  text: S.of(context).emailus,
-                                  icon: 'assets/Img/email.png',
-                                  onPressed: () => launchApp(
-                                      email: "almillionairerentacar@gmail.com",
-                                      context: context,
-                                      progName: email))
-                            ],
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          )
-
-
-
-                    ),
+                        margin: EdgeInsets.only(top: 13, left: 25, right: 25),
+                        child: Row(
+                          children: [
+                            CustomButton(
+                                text: S.of(context).callNow,
+                                icon: 'assets/Img/call.png',
+                                onPressed: () => launchApp(
+                                    phone: "+971508883337",
+                                    context: context,
+                                    progName: tel)),
+                            CustomButton(
+                                text: S.of(context).whatsapp,
+                                icon: 'assets/Img/whatsapp.png',
+                                onPressed: () => launchApp(
+                                    phone: "+971508883337",
+                                    message: " ",
+                                    context: context,
+                                    progName: whatsApp)),
+                            CustomButton(
+                                text: S.of(context).map,
+                                icon: 'assets/Img/map.png',
+                                onPressed: () => launchApp(
+                                    mapURL:
+                                        "https://goo.gl/maps/rVJ52iHZ6rrwKTyk8",
+                                    context: context,
+                                    progName: map)),
+                            CustomButton(
+                                text: S.of(context).emailus,
+                                icon: 'assets/Img/email.png',
+                                onPressed: () => launchApp(
+                                    email: "info@weajar.com",
+                                    context: context,
+                                    progName: email))
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        )),
                     Container(
                         margin: EdgeInsets.only(top: 30, left: 25, right: 25),
                         child: Row(
@@ -172,21 +165,24 @@ class WeCarDetails extends StatelessWidget {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
                                 border: Border.all(color: Colors.white),
-                                color: Colors.red,
+                                color: Color(0xffB41000),
                               ),
                               child: Padding(
                                   padding: EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 30),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        'Car Price',
-                                        style: TextStyle(color: Colors.white,fontSize: 18),
+                                        S.of(context).carPrice,
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 18),
                                       ),
                                       Text(
-                                        '${car.Price.floor()} AED / Day',
-                                        style: TextStyle(color: Colors.white,fontSize: 18),
+                                        '${car.Price.floor()} ${S.of(context).aedday}',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 18),
                                       )
                                     ],
                                   )),
@@ -199,140 +195,186 @@ class WeCarDetails extends StatelessWidget {
                         child: Row(
                           children: [
                             Container(
-                                width: MediaQuery.of(context).size.width / 2.2,
-                                height: 30,
+                                width: MediaQuery.of(context).size.width / 1.8,
+                                height: 35,
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
+                                        BorderRadius.all(Radius.circular(14)),
                                     color: Colors.white),
                                 child: textWithPadding(
                                     S.of(context).carSpecification,
                                     vertical: 5,
                                     fontSize: 18,
+                                    color: Color(0xff757575),
                                     align: TextAlign.center)),
                           ],
                         )),
                     Container(
-                        margin: EdgeInsets.only(top: 10, left: 25, right: 25),
-                        child: Row(
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      margin: EdgeInsets.only(top: 10),
+                      child:
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //   Column(
+                          //     crossAxisAlignment: CrossAxisAlignment.start,
+                          //
+                          //     children: [textWithPadding(S.of(context).carMake,
+                          //       vertical: 10, color: Colors.white),textWithPadding(S.of(context).carclass,
+                          //       vertical: 10, color: Colors.white),    textWithPadding(S.of(context).model,
+                          //       vertical: 10, color: Colors.white),textWithPadding(S.of(context).type,
+                          //       vertical: 10, color: Colors.white), textWithPadding(S.of(context).incType,
+                          //       vertical: 10, color: Colors.white), textWithPadding(
+                          //       S.of(context).deliveryToYouLcation,
+                          //       vertical: 10,
+                          //       color: Colors.white)],),
+                          //   Column(children: [ textWithPadding(car.CarMake,
+                          //       vertical: 10, color: Colors.white),  textWithPadding(car.CarClass,
+                          //       vertical: 10, color: Colors.white),    textWithPadding('${car.Model ?? " "}',
+                          //       vertical: 10, color: Colors.white), textWithPadding(getCarType(car.Seats),
+                          //       vertical: 10, color: Colors.white),textWithPadding(
+                          //       getInsuranceType(
+                          //           car.InsuranceType ?? "", context),
+                          //       vertical: 10,
+                          //       color: Colors.white), textWithPadding(
+                          //       car.WithDelivery
+                          //           ? S.of(context).yes
+                          //           : S.of(context).no,
+                          //       vertical: 10,
+                          //       color: Colors.white)],)
+                          // ],)
+                          //
+
+
+
+
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              textWithPadding(S.of(context).carMake,
+                                  vertical: 10, color: Colors.white),
+                              textWithPadding(car.CarMake,
+                                  vertical: 10, color: Colors.white)
+                            ],
+                          ),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                textWithPadding(S.of(context).carMake,
-                                    vertical: 10,
-                                    horizontal: 10,
-                                    color: Colors.white),
                                 textWithPadding(S.of(context).carclass,
-                                    vertical: 10,
-                                    horizontal: 10,
-                                    color: Colors.white),
+                                    vertical: 10, color: Colors.white),
+                                textWithPadding(car.CarClass,
+                                    vertical: 10, color: Colors.white)
+                              ]),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
                                 textWithPadding(S.of(context).model,
-                                    vertical: 10,
-                                    horizontal: 10,
-                                    color: Colors.white),
+                                    vertical: 10, color: Colors.white),
+                                textWithPadding('${car.Model ?? " "}',
+                                    vertical: 10, color: Colors.white)
+                              ]),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
                                 textWithPadding(S.of(context).type,
-                                    vertical: 10,
-                                    horizontal: 10,
-                                    color: Colors.white),
+                                    vertical: 10, color: Colors.white),
+                                textWithPadding(getCarType(car.Seats),
+                                    vertical: 10, color: Colors.white)
+                              ]),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
                                 textWithPadding(S.of(context).incType,
+                                    vertical: 10, color: Colors.white),
+                                textWithPadding(
+                                    getInsuranceType(
+                                        car.InsuranceType ?? "", context),
                                     vertical: 10,
-                                    horizontal: 10,
-                                    color: Colors.white),
+                                    color: Colors.white)
+                              ]),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
                                 textWithPadding(
                                     S.of(context).deliveryToYouLcation,
                                     vertical: 10,
-                                    horizontal: 10,
                                     color: Colors.white),
-                              ],
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width / 5.5,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                textWithPadding(car.CarMake,
-                                    vertical: 10, color: Colors.white),
-                                textWithPadding(car.CarClass,
-                                    vertical: 10, color: Colors.white),
-                                textWithPadding('${car.Model ?? " "}',
-                                    vertical: 10, color: Colors.white),
-                                textWithPadding(S.of(context).type,
-                                    vertical: 10, color: Colors.white),
-                                textWithPadding(car.InsuranceType ?? "",
-                                    vertical: 10, color: Colors.white),
                                 textWithPadding(
                                     car.WithDelivery
                                         ? S.of(context).yes
                                         : S.of(context).no,
                                     vertical: 10,
-                                    color: Colors.white),
-                              ],
-                            )
-                          ],
-                        )),
+                                    color: Colors.white)
+                              ])
+                        ],
+                      ),
+                    ),
                     Container(
                         margin: EdgeInsets.only(top: 10, left: 25, right: 25),
                         child: Row(
                           children: [
                             Container(
-                                width: MediaQuery.of(context).size.width / 2,
+                                width: MediaQuery.of(context).size.width / 1.8,
                                 height: 35,
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
+                                        BorderRadius.all(Radius.circular(14)),
                                     color: Colors.white),
                                 child: textWithPadding(S.of(context).rentingreq,
                                     vertical: 5,
                                     fontSize: 18,
+                                    color: Color(0xff757575),
                                     align: TextAlign.center)),
                           ],
                         )),
                     Container(
-                        margin: EdgeInsets.only(top: 10, left: 25, right: 25),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        margin: EdgeInsets.only(top: 10, left: 0, right: 0),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 textWithPadding(S.of(context).drivinglicens,
-                                    vertical: 10,
-                                    horizontal: 10,
-                                    color: Colors.white),
+                                    vertical: 6, color: Colors.white),
                                 textWithPadding(S.of(context).deposit,
-                                    vertical: 10,
-                                    horizontal: 10,
-                                    color: Colors.white),
+                                    vertical: 6, color: Colors.white),
                                 textWithPadding(S.of(context).minAge,
-                                    vertical: 10,
-                                    horizontal: 10,
-                                    color: Colors.white),
+                                    vertical: 6, color: Colors.white),
                               ],
                             ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width / 5,
-                            ),
-                            Expanded(
-                                child: Column(
+                            Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 textWithPadding(
-                                    getDrivingLicense(car.DrivingLicense),
-                                    vertical: 10,
+                                    getDrivingLicense(
+                                        car.DrivingLicense, context),
+                                    vertical: 6,
+                                    fontSize: getDrivingLicense(
+                                                    car.DrivingLicense, context)
+                                                .length >
+                                            14
+                                        ? 11
+                                        : 16,
                                     color: Colors.white),
                                 textWithPadding(
-                                    '${car.InsuranceAmount.floor() ?? "0"} AED',
-                                    vertical: 10,
+                                    '${car.InsuranceAmount.floor() ?? "0"} ${S.of(context).aed}',
+                                    vertical: 6,
+                                    fontSize: 14,
                                     color: Colors.white),
                                 textWithPadding('${car.MinimumAge ?? ""}',
-                                    vertical: 10, color: Colors.white),
+                                    fontSize: 14,
+                                    vertical: 6,
+                                    color: Colors.white),
                               ],
-                            ))
+                            )
                           ],
                         )),
                   ],
@@ -341,17 +383,44 @@ class WeCarDetails extends StatelessWidget {
         })));
   }
 
-  String getDrivingLicense(String drivingLicense) {
+  String getDrivingLicense(String drivingLicense, BuildContext context) {
     switch (drivingLicense) {
       case 'LocalDrivingLicense':
-        return 'Local driving license';
+        return S.of(context).local;
         break;
       case 'InternationalDrivingLicense':
-        return 'International driving license';
+        return S.of(context).International;
       case 'SpecificTypeIsNotRequired':
-        return 'No specific type is required';
+        return S.of(context).SpecificType;
 
         return '';
+    }
+  }
+
+  String getInsuranceType(String inc, BuildContext context) {
+    switch (inc) {
+      case 'FullInsurance':
+        return S.of(context).full;
+        break;
+      case 'ThirdPartyInsurance':
+        return S.of(context).third;
+
+        return '';
+    }
+  }
+
+  String getCarType(int seats) {
+    switch (seats) {
+      case 5:
+        return 'Hatchback';
+      case 4:
+        return 'Coupe';
+      case 3:
+        return 'SUV';
+      case 2:
+        return 'Sedan';
+      case 1:
+        return 'Cross over';
     }
   }
 }

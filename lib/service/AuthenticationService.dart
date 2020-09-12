@@ -53,10 +53,11 @@ class AuthenticationService {
     var response = await client.post(base_url + 'SignIn',
         body: {"username": email, "password": password});
     if (response.statusCode == 200) {
-      final Map parsed = json.decode(response.body);
-
+      final Map parsed = JsonDecoder().convert(response.body);
+      if (parsed['Data'] == null)
+        return false;
       user = LoginUser.fromJson(parsed['Data']);
-      _tokenKey = user.Token;
+
       await setToken(user.Token);
       await setUser(json.encode(user));
       currentPass = password;
@@ -72,11 +73,19 @@ class AuthenticationService {
 
   setToken(String token) async {
     final SharedPreferences prefs = await _prefs;
+    _tokenKey = token;
     prefs.setString(_tokenKey, token == null ? null : 'Bearer $token');
   }
 
   setUser(String user) async {
     final SharedPreferences prefs = await _prefs;
     prefs.setString(_userKey, user);
+  }
+  resetData() async {
+     await setToken(null);
+    user = null;
+    currentPass =null;
+
+
   }
 }

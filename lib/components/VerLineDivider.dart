@@ -9,7 +9,7 @@ class VerLineDivider extends StatelessWidget {
         height: MediaQuery.of(context).size.width * 0.1,
         width: 2,
         decoration: BoxDecoration(
-            color: Colors.black38,
+            color:  Colors.grey[200],
 
         ));
   }

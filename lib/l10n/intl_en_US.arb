@@ -11,7 +11,7 @@
   "carclass": "Class",
   "model": "Model",
   "type": "Type",
-  "incType": "Inc. Type",
+  "incType": "Insurance Type",
   "deliveryToYouLcation":"Delivery to you location",
   "rentingreq": "Renting requirements",
   "drivinglicens": "Driving License",
@@ -27,7 +27,7 @@
   "contactus": "Contact Us",
   "profile": "Profile",
   "greeting": "Hello {name}",
-  "newCar": "Add new car",
+  "newCar": "ADD NEW CAR",
   "cardetails": "Car Details",
   "price": "Price",
   "age": "Age",
@@ -50,7 +50,46 @@
   "newPassword": "New Password",
   "confirmPassword": "Confirm Password",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "registration": "Sign Up",
+  "hasAccount": "Already has account?",
+  "carPrice": "Car Price",
+  "aedday": "AED / Day",
+  "booked": "Booked",
+  "contactus": "Contact Us ",
+  "search": "Search",
+  "status": "Status",
+  "carrenttype": "Car rent type",
+  "save": "Save",
+  "confirm": "Confirm",
+  "from": "From",
+  "to": "To",
+"all": "All",
+  "local": "Local",
+  "International": "International",
+  "SpecificType": "No specific type is required",
+  "aed": "AED",
+
+  "full": "Full",
+  "third": "Third Party",
+  "cover": "Cover photo",
+  "mycar": "My car",
+  "available": "Available",
+  "booked": "Booked",
+  "yes": "Yes",
+  "no": "No",
+  "premium": "Premium",
+  "normal": "Normal",
+  "about1": "WEAJAR is the biggest car rental company in the Middle East. WEAJAR offers an efficient, convenient and elegant way of renting cars to many people and at any time.",
+  "about2": "Eradicating the conventional ways of renting a car, WE AJAR brings convenience to you at its finest.",
+  "about3": "Dedicated to making car rental as simple as possible, we help customers find the best options to book the perfect car for them.",
+  "about4": "We want to bring the world to you. From choosing a suitable car to finding the best price, we want you to have all the options at your fingertips.\n\n\"That's why we're focused on making car rental better for everyone. This spirit shines through everything we do.",
+  "about5": "Want to Join us? Contact us with pleasure"
+
+
+
+
+
 
 
 

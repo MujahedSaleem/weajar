@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:weajar/Pages/Aboutus.dart';
+import 'package:weajar/Pages/ContactUs.dart';
 import 'package:weajar/Pages/login.dart';
 import 'package:weajar/Pages/profile.dart';
 import 'package:weajar/Pages/registration.dart';
@@ -24,16 +25,22 @@ class SideDrawer extends StatefulWidget {
 class _SideDrawerState extends State<SideDrawer> {
   var authService = AuthenticationService();
   bool signIn = true;
+  bool isAdmin = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    authService.getCurrentToken().then((value) => {
-          if (value != null)
-            setState(() {
-              signIn = false;
-            })
-        });
+   if(authService.IsTokenNotActive()){
+     setState(() {
+       signIn = true;
+
+     });
+   }else{
+     setState(() {
+       signIn = false;
+       isAdmin = authService.getCurrentUser()?.IsAdmin;
+     });
+   }
   }
 
   void navigate(BuildContext context, newRouteName) {
@@ -48,7 +55,7 @@ class _SideDrawerState extends State<SideDrawer> {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Colors.grey[800],
+        color: Color(0xFF48484A),
         padding: EdgeInsets.fromLTRB(0, 50, 0, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,6 +128,27 @@ class _SideDrawerState extends State<SideDrawer> {
                     ),
                   if (!signIn)
                     InkWell(
+                        child: Text(S.of(context).registration,
+                            style:
+                            TextStyle(fontSize: 20, color: Colors.white)),
+                        onTap: () {
+                          navigate(context, Registration.routeName);
+                        }),
+                  if (!signIn)
+                    SizedBox(
+                      height: 20,
+                    ),
+                  if (!signIn)
+                    HorzLineDivider(
+                      color: Colors.white,
+                      width: MediaQuery.of(context).size.width * 0.6,
+                    ),
+                  if (!signIn)
+                    SizedBox(
+                      height: 20,
+                    ),
+                  if (!signIn)
+                    InkWell(
                         child: Text(S.of(context).logout,
                             style:
                                 TextStyle(fontSize: 20, color: Colors.white)),
@@ -132,6 +160,7 @@ class _SideDrawerState extends State<SideDrawer> {
                             Navigator.pushNamed(context, WeCarList.routeName);
                           });
                           if (!await authService.signOut()) {
+                            await authService.resetData();
                             Fluttertoast.showToast(
                                 msg: "something went wrong",
                                 toastLength: Toast.LENGTH_SHORT,
@@ -172,8 +201,13 @@ class _SideDrawerState extends State<SideDrawer> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text(S.of(context).contactus,
-                      style: TextStyle(fontSize: 20, color: Colors.white)),
+                  InkWell(
+                      child: Text(S.of(context).contactus,
+                          style:
+                          TextStyle(fontSize: 20, color: Colors.white)),
+                      onTap: () {
+                        navigate(context, ContactUs.routeName);
+                      }),
                   SizedBox(
                     height: 20,
                   ),

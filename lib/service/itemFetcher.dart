@@ -23,13 +23,14 @@ class ItemFetcher {
     final list = <Car>[];
     // Uncomment the following line to see in real time now items are loaded lazily.
     // print('Now on page $_currentPage');
-    var data = await client.post("$_baseUrl/GetCars",headers: header);
+    var data = await client.post("$_baseUrl/GetCars", headers: header);
     var cars = json.decode(data.body);
     List<Car> listx =
-    List.from(cars["Data"]).map((e) => Car.fromJson(e)).toList();
+        List.from(cars["Data"]).map((e) => Car.fromJson(e)).toList();
     list.addAll(listx);
     return list;
   }
+
   // This async function simulates fetching results from Internet, etc.
   Future<List<Car>> fetchActiveCar() async {
     final list = <Car>[];
@@ -51,10 +52,10 @@ class ItemFetcher {
       'authorization': await auth.getCurrentToken(),
       'content-type': 'application/json'
     };
+
     var result = await client.post("$_baseUrl/Create",
-        body:JsonEncoder().convert( car.toJson()), headers: header);
-    if (result.statusCode == 200)
-      return true;
+        body: car.toJsonString(), headers: header);
+    if (result.statusCode == 200) return true;
     return false;
   }
 
@@ -67,7 +68,7 @@ class ItemFetcher {
       'content-type': 'application/json'
     };
     var data = await client.post("$_baseUrl/getCarsByUser", headers: header);
-    if(data.statusCode > 400 &&data.statusCode <500){
+    if (data.statusCode > 400 && data.statusCode < 500) {
       return null;
     }
     var cars = json.decode(data.body);

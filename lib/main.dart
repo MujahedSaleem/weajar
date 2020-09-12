@@ -2,6 +2,8 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:weajar/Pages/Aboutus.dart';
+import 'package:weajar/Pages/ContactUs.dart';
+import 'package:weajar/Pages/SplashScreen.dart';
 import 'package:weajar/Pages/login.dart';
 import 'package:weajar/Pages/profile.dart';
 import 'package:weajar/Pages/registration.dart';
@@ -27,7 +29,7 @@ class MainApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
-      initialRoute: WeCarList.routeName,
+      home: SplashScreen(),
       routes: {
         WeCarList.routeName: (BuildContext context) => WeCarList(),
         WeCarDetails.routeName: (BuildContext context) => WeCarDetails(),
@@ -38,7 +40,10 @@ class MainApp extends StatelessWidget {
         Login.routeName: (BuildContext context) => Login(),
         EditProfile.routeName: (BuildContext context) => EditProfile(),
         ResetPassword.routeName: (BuildContext context) => ResetPassword(),
+        Registration.routeName: (BuildContext context) => Registration(),
+        ContactUs.routeName: (BuildContext context) => ContactUs(),
       },
+
     );
   }
 }

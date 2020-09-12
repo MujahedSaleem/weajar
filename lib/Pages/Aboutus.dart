@@ -7,25 +7,22 @@ import 'package:weajar/generated/l10n.dart';
 class AboutUs extends StatelessWidget {
   static const String routeName = 'abouts';
 
-  final GlobalKey<ScaffoldState> scaffoldKey =
-      new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldKey,
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Color(0xFF48484A),
         drawer: SideDrawer(
           scaffoldKey: scaffoldKey,
         ),
         body: GestureDetector(onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
-        }, child: SafeArea(child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-          return Container(
-              height: constraints.maxHeight,
+        }, child: SafeArea(child: Container(
+              height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: Column(
+              child:SingleChildScrollView(child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -34,6 +31,7 @@ class AboutUs extends StatelessWidget {
                         child: CustomAppBar(
                             text: S.of(context).aboutus,
                             icon: Icons.menu,
+                            iconColor: Colors.white,
                             onPressed: () {
                               if (scaffoldKey.currentState.hasDrawer)
                                 scaffoldKey.currentState.openDrawer();
@@ -44,45 +42,99 @@ class AboutUs extends StatelessWidget {
                         SizedBox(
                           height: 50,
                         ),
-                        Text("WEAJAR is the biggest car rental company in the Middle East. WEAJAR offers an efficient, convenient and elegant way of renting cars to many people and at any time." +
-                            "              Eradicating the conventional ways of renting a car, WE AJAR brings convenience to you at its finest." +
-                            "Dedicated to making car rental as simple as possible, we help customers find the best options to book the perfect car for them."
-                        ,style: TextStyle(fontSize: 14,color: Colors.white),),
+                        Text(
+                          S.of(context).about1,
+                          style: TextStyle(
+                              fontSize: 14, color: Colors.white, height: 1.5),
+                        ),
                         SizedBox(
                           height: 20,
                         ),
-                        Text("We want to bring the world to you. From choosing a suitable car to finding the best price, we want you to have all the options at your fingertips. " +
-                            "That's why we're focused on making car rental better for everyone. This spirit shines through everything we do.",style: TextStyle(fontSize: 14,color: Colors.white))
+                        Text(
+                            S.of(context).about2,
+                            style: TextStyle(
+                                fontSize: 14.5,
+                                color: Colors.white,
+                                height: 1.5)),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                            S.of(context).about3,
+                            style: TextStyle(
+                                fontSize: 15,
+                                height: 1.5,
+                                color: Colors.white)),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                            S.of(context).about4,
+                            style: TextStyle(
+                                fontSize: 15.5, height: 1.5, color: Colors.white))
                       ]),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.3,
+                      height: MediaQuery.of(context).size.height * 0.1,
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("Want to Join us? Contact us with pleasure",style: TextStyle(fontSize: 14,color: Colors.white)),
+                        Text( S.of(context).about5,
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.white)),
+                        SizedBox(
+                          height: 5,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              "assets/Img/instagram.png",
+                          children: [ InkWell(
+                            child: Image.asset(
+                              "assets/Img/fb.png",
                               width: 30,
                             ),
-                            SizedBox(width: 10,),
-                            InkWell(child: Image.asset(
-                              "assets/Img/email-white.png",
-                              width: 40,
-                            ) ,onTap: (){
-                              launch('mailto:almillionairerentacar@gmail.com?subject=""&body=""');
-                            },)
+                            onTap: () {
+                              launch(
+                                  'http://www.fb.com/weajarr');
+                            },
+                          ),
 
+                            SizedBox(
+                              width: 25,
+                            ),
+                            InkWell(
+                              child: Image.asset(
+                                "assets/Img/instagram.png",
+                                width: 25,
+                              ),
+                              onTap: () {
+                                launch(
+                                    'http://www.instagram.com/weajar');
+                              },
+                            ),
+
+                            SizedBox(
+                              width: 25,
+                            ),
+                            InkWell(
+                              child: Image.asset(
+                                "assets/Img/email-white.png",
+                                width: 40,
+                              ),
+                              onTap: () {
+                                launch(
+                                    'mailto:info@weajar.com?subject=""&body=""');
+                              },
+                            ),
                           ],
+                        ),
+                        SizedBox(
+                          height: 50,
                         )
                       ],
                     )
-                  ]));
-        }))));
+                  ])))
+        )));
   }
 }

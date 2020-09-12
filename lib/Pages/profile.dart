@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:weajar/Pages/AddNewCar.dart';
@@ -29,7 +30,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   //it will hold search box value
   TextEditingController _searchQuery;
-  List<FullCarInfo> filteredRecored;
+  Set<FullCarInfo> filteredRecored;
   final _carList = <FullCarInfo>[];
   bool _isLoading = true;
   final _itemFetcher = ItemFetcher();
@@ -40,22 +41,28 @@ class _ProfileState extends State<Profile> {
   LoginUser currentUser;
   List<CarMake> _carsMakers;
   var auth = AuthenticationService();
+  bool refresh = false;
+
   void _loadMore() {
+    if (auth.IsTokenNotActive()) {
+      setState(() {
+        auth.signOut();
+        Navigator.pushNamedAndRemoveUntil(
+            context, WeCarList.routeName, (route) => false);
+      });
+    }
+
     _isLoading = true;
     requests = List();
     requests.add(_itemFetcher.fetchCarByUser());
     requests.add(_carMakerFetcher.fetchCarMaker());
     Future.wait(requests).then((List<dynamic> nums) async {
       if (currentUser == null) {
-        currentUser =  auth.getCurrentUser();
+        currentUser = auth.getCurrentUser();
       }
       _cars = nums[0];
-      if (_cars == null) {
-        await auth.signOut();
-        Navigator.pushNamedAndRemoveUntil(
-            context, WeCarList.routeName, (route) => false);
-        return;
-      }
+      filteredRecored = Set();
+
       _carsMakers = nums[1];
       if (_cars.isEmpty) {
         setState(() {
@@ -78,14 +85,16 @@ class _ProfileState extends State<Profile> {
                 MinimumAge: e.MinimumAge,
                 InsuranceType: e.InsuranceType,
                 InsuranceAmount: e.InsuranceAmount,
-                Seats:  e.Seats,
+                Seats: e.Seats,
+                City: e.CityID,
                 Status: e.Status,
                 WithDelivery: e.WithDelivery,
                 IsPrime: e.IsPrime ?? false,
                 Price: e.Price);
           }).toList();
           _carList.addAll(carsInfo);
-          filteredRecored.addAll(carsInfo);
+          filteredRecored.addAll(carsInfo.toSet());
+          refresh = false;
         });
       }
     });
@@ -115,7 +124,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    filteredRecored = List();
+    filteredRecored = Set();
     _searchQuery = new TextEditingController();
     try {
       _loadMore();
@@ -141,7 +150,7 @@ class _ProfileState extends State<Profile> {
     bool showPremium = false;
     return Scaffold(
         key: scaffoldKey,
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Color(0xff20252A),
         drawer: SideDrawer(
           scaffoldKey: scaffoldKey,
         ),
@@ -168,13 +177,14 @@ class _ProfileState extends State<Profile> {
                                   child: CustomAppBar(
                                       text: S.of(context).profile,
                                       icon: Icons.menu,
+                                      iconColor: Colors.white,
                                       onPressed: () {
                                         if (scaffoldKey.currentState.hasDrawer)
                                           scaffoldKey.currentState.openDrawer();
                                       }),
                                 ),
                                 HorzLineDivider(
-                                  color: Colors.grey,
+                                  color: Color(0xff3D434A),
                                   width: MediaQuery.of(context).size.width,
                                 ),
                                 Row(
@@ -187,110 +197,109 @@ class _ProfileState extends State<Profile> {
                                           width: mainWidth * 0.1,
                                         ),
                                         Text(
-                                          S.of(context).greeting(
-                                              currentUser?.Name ?? ""),
+                                          S
+                                              .of(context)
+                                              .greeting(currentUser?.Username),
                                           style: TextStyle(
                                               color: Colors.white,
+                                              fontWeight: FontWeight.bold,
                                               fontSize: 18),
                                         ),
                                         SizedBox(
                                           width: 10,
                                         ),
-                                        IconButton(
-                                          icon: Icon(Icons.edit),
-                                          onPressed: () async {
-                                            if (auth.IsTokenNotActive())
-                                              auth.signOut();
-                                            await Navigator.pushNamed(
-                                                context, EditProfile.routeName);
-                                            if (( auth.getCurrentUser())
-                                                .chnaged) {
-                                              var result = await _userService
-                                                  .updateUser();
-                                              if (!result) {
+                                        Container(
+                                          height: 30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.white),
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          child: IconButton(
+                                            icon: Icon(
+                                              Icons.mode_edit,
+                                              color: Colors.white,
+                                              size: 13,
+                                            ),
+                                            onPressed: () async {
+                                              if (auth.IsTokenNotActive())
                                                 auth.signOut();
+                                              await Navigator.pushNamed(context,
+                                                  EditProfile.routeName);
+                                              if ((auth.getCurrentUser())
+                                                  .chnaged) {
+                                                var result = await _userService
+                                                    .updateUser();
+                                                if (!result) {
+                                                  auth.signOut();
+                                                }
                                               }
-                                            }
-                                          },
-                                        ),
+                                            },
+                                          ),
+                                        )
                                       ],
                                     ),
-                                    RaisedButton(
-                                      onPressed: () async {
-                                        var result = await Navigator.of(context)
-                                            .pushNamed(AddEditCar.routeName,
-                                                arguments: {
-                                              'carMaker': _carsMakers
-                                            });
-                                        setState(() {
-                                          _isLoading = true;
-                                        });
-                                        if (result != null) {
-                                          var success = await _itemFetcher.AddCar(result);
-                                          if(!success){
-                                            Scaffold.of(context).showSnackBar(SnackBar(content: Text("Something went wrong"),));
+                                    Container(
+                                      margin: EdgeInsets.all(3),
+                                      width: 100,
+                                      height: 50,
+                                      child: RaisedButton(
+                                        onPressed: () async {
+                                          var result =
+                                              await Navigator.of(context)
+                                                  .pushNamed(
+                                                      AddEditCar.routeName,
+                                                      arguments: {
+                                                'carMaker': _carsMakers
+                                              });
+                                          setState(() {
+                                            _isLoading = true;
+                                          });
+                                          if (result != null) {
+                                            var success =
+                                                await _itemFetcher.AddCar(
+                                                    result);
+                                            if (!success) {
+                                              Scaffold.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    "Something went wrong"),
+                                              ));
+                                            }
                                           }
-                                        }
-                                        setState(() {
-                                          _loadMore();
-                                        });
-                                      },
-                                      color: Color.fromARGB(250, 237, 56, 38),
-                                      child: Text(
-                                        S.of(context).newCar,
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 18),
+                                          setState(() {
+                                            _loadMore();
+                                          });
+                                        },
+                                        padding: EdgeInsets.all(0),
+                                        color: Color.fromARGB(250, 237, 56, 38),
+                                        child: Text(
+                                          S.of(context).newCar,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 14),
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            side: BorderSide(
+                                                color: Color.fromARGB(
+                                                    200, 237, 56, 38))),
                                       ),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          side: BorderSide(
-                                              color: Color.fromARGB(
-                                                  200, 237, 56, 38))),
                                     )
                                   ],
                                 ),
                                 HorzLineDivider(
-                                  color: Colors.grey,
+                                  color: Color(0xff3D434A),
                                   width: MediaQuery.of(context).size.width,
                                 ),
-                                Padding(
-                                    padding: EdgeInsets.fromLTRB(8, 20, 8, 30),
-                                    child: Container(
-                                      height: 68,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                          width: 8,
-                                        ),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 1, vertical: 1),
-                                        child: TextField(
-                                          controller: _searchQuery,
-                                          onChanged: updateSearchQuery,
-                                          decoration: InputDecoration(
-                                            fillColor: Colors.white,
-                                            hintText: 'Search Contacts',
-                                            prefixIcon: Icon(Icons.search),
-                                            contentPadding: EdgeInsets.fromLTRB(
-                                                20.0, 15.0, 20.0, 15.0),
-                                            border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        10.0)),
-                                          ),
-                                        ),
-                                      ),
-                                    )),
                                 Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 40, vertical: 10),
                                     child: Text(
-                                      "My cars",
+                                      S.of(context).mycar,
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 24),
                                     ))
@@ -298,7 +307,18 @@ class _ProfileState extends State<Profile> {
                             ),
                           filteredRecored != null && filteredRecored.length > 0
                               ? Expanded(
-                                  child: CarList(carList: filteredRecored))
+                                  child: CarList(
+                                  color: Color(0xff3D434A),
+                                  fontColor: Colors.white,
+                                  carList: filteredRecored.toList(),
+                                  onRefresh: () async {
+                                    setState(() {
+                                      refresh = true;
+                                      _loadMore();
+                                      return;
+                                    });
+                                  },
+                                ))
                               : (_carList == null || _isLoading)
                                   ? Center(
                                       child: Loader(),

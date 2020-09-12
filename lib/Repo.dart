@@ -1,3 +1,4 @@
+import 'package:weajar/model/City.dart';
 import 'package:weajar/model/car.dart';
 
 class Repo {
@@ -7,8 +8,10 @@ class Repo {
     return _singleton;
   }
   Repo._internal();
-  List<Car> fullCars;
-
-  set fullCarInfo(List<Car> cars) => fullCars = cars;
-  get fullCarInfo => fullCars;
+  List<Car> _fullCars;
+  List<City> _Cities;
+  set fullCarInfo(List<Car> cars) => _fullCars = cars;
+  get fullCarInfo => _fullCars;
+  set allCity(List<City> cities) => _Cities = cities;
+  List<City> get  allCity => _Cities;
 }

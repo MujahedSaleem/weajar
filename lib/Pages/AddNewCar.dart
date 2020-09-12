@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:weajar/Repo.dart';
@@ -12,6 +13,7 @@ import 'package:weajar/generated/l10n.dart';
 import 'package:weajar/model/CarMake.dart';
 import 'package:weajar/model/Isearch.dart';
 import 'package:weajar/model/car.dart';
+import 'package:weajar/service/AuthenticationService.dart';
 import 'package:weajar/service/CitiesFetcher.dart';
 import 'package:weajar/service/itemFetcher.dart';
 import 'package:mime_type/mime_type.dart';
@@ -24,7 +26,6 @@ class AddEditCar extends StatefulWidget {
 
 class _AddEditCarState extends State<AddEditCar> {
   final _cityFetcher = CitiesFetcher();
-  final _itemFetcher = ItemFetcher();
 
   var repo = Repo();
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -32,8 +33,8 @@ class _AddEditCarState extends State<AddEditCar> {
   List<File> tempImage = new List();
   String errMessage = 'Error Uploading Image';
   int carMaker ;
-  int carClass = 0;
-  String type = '5';
+  int carClass ;
+  int type = 5;
   String price = 'All';
   String model = '2013';
   bool deliveryAvailability = true;
@@ -41,36 +42,20 @@ class _AddEditCarState extends State<AddEditCar> {
   String insuranceTypeVal = 'FullInsurance';
   bool adTypeValue = false;
   int city = 0;
-  int status = 0;
-
+  int status = 1;
+  var currentUser = AuthenticationService().getCurrentUser();
   bool _isloading = true;
+  List<FiealdSearch> _carsMakers;
   TextEditingController _priceControlelr;
   TextEditingController _ageControlelr;
   TextEditingController _depositControlelr;
   List<FiealdSearch<int>> Cities;
-  List<FiealdSearch<int>> carClases = [FiealdSearch("Car class", 0)];
-  final List<FiealdSearch> carStatus = [
-    FiealdSearch(' Available ', 0),
-    FiealdSearch('Booked', 1)
-  ];
-  final List<FiealdSearch> insuranceType = [
-    FiealdSearch('Full insurance', 'FullInsurance'),
-    FiealdSearch('Third party insurance', 'ThirdPartyInsurance')
-  ];
-  final List<FiealdSearch> availability = [
-    FiealdSearch('Yes', true),
-    FiealdSearch('No', false)
-  ];
-  final List<FiealdSearch> adType = [
-    FiealdSearch('Premium', true),
-    FiealdSearch('Normal', false)
-  ];
-  final List<FiealdSearch> drivingLicencesStates = [
-    FiealdSearch('Local driving license', 'LocalDrivingLicense'),
-    FiealdSearch(
-        'International driving license', 'InternationalDrivingLicense'),
-    FiealdSearch('No specific type is required', 'SpecificTypeIsNotRequired')
-  ];
+  List<FiealdSearch<int>> carClases = [FiealdSearch("Class", 0)];
+
+
+
+
+
   final List<FiealdSearch> years = [
     FiealdSearch('2013', '2013'),
     FiealdSearch('2014', '2014'),
@@ -83,31 +68,37 @@ class _AddEditCarState extends State<AddEditCar> {
     FiealdSearch('2021', '2021'),
   ];
   final List<FiealdSearch> vehivalType = [
-    FiealdSearch('Hatchback', '5'),
-    FiealdSearch('Coupe', '4'),
-    FiealdSearch('SUV', '3'),
-    FiealdSearch('Sedan', '2'),
-    FiealdSearch('Cross over', '1')
+    FiealdSearch('Hatchback', 5),
+    FiealdSearch('Coupe', 4),
+    FiealdSearch('SUV', 3),
+    FiealdSearch('Sedan', 2),
+    FiealdSearch('Cross over', 1)
   ];
-  List<FiealdSearch> getCarMake(List<CarMake> carmakes) {
-    var _carMakes = carmakes.map((e) => FiealdSearch(e.NameEn, e.ID)).toList();
-    if(carMaker == null)
-    carMaker = _carMakes[0].Key;
-    return _carMakes;
+   getCarMake(List<CarMake> carmakes) {
+     _carsMakers = carmakes.map((e) => FiealdSearch(e.NameEn, e.ID)).toList();
+
+    setState(() {
+      carMaker= _carsMakers[0].Key;
+    });
   }
 
   void getCarClass(List<CarMake> carmakes) {
-    if (carMaker == null)
-      carClases = [FiealdSearch("Car class", 0)];
-    else {
+
       var spesificCarMake =
           carmakes.firstWhere((element) => element.ID == carMaker);
       carClases =
           spesificCarMake.CarClasses.where((element) => element.NameEn != null)
               .map((e) => FiealdSearch(e.NameEn, e.ID))
               .toList();
-      carClass = carClases[0].Key;
-    }
+      setState(() {
+        if (carMaker == 0) {
+          carClass = 0;
+        } else {
+          carClass = carClases[0].Key;
+        }
+      });
+
+
   }
 
   @override
@@ -121,22 +112,34 @@ class _AddEditCarState extends State<AddEditCar> {
     tempImage.add(null);
     tempImage.add(null);
     tempImage.add(null);
-    _cityFetcher.fetchCities().then((value)  async {
-      if (repo.fullCarInfo == null)
-      repo.fullCarInfo = await _itemFetcher.fetchCars();
-
-      Cities = value.map((e) => FiealdSearch(e.NameEn, e.ID)).toList();
-      if (city == 0) city = Cities[0].Key;
+    if (repo.allCity == null || repo.allCity.length == 0) {
+      _cityFetcher.fetchCities().then((value) async {
+        setState(() {
+          Cities = value.map((e) => FiealdSearch(e.NameEn, e.ID)).toList();
+          Cities.insert(0, FiealdSearch('City', 0));
+        });
+        repo.allCity = value.toList();
+      });
+    } else {
+      setState(() {
+        Cities = repo.allCity.map((e) => FiealdSearch(e.NameEn, e.ID)).toList();
+        Cities.insert(0, FiealdSearch('City', 0));
+      });
       setState(() {
         _isloading = false;
       });
-    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final List<CarMake> carmakes = (ModalRoute.of(context).settings.arguments
-        as Map<String, List<CarMake>>)['carMaker'];   
+        as Map<String, List<CarMake>>)['carMaker'];
+    if(carMaker == null){
+    getCarMake(carmakes);
+    getCarClass(carmakes);
+    }
+
     final List<Car> carList = repo.fullCarInfo;
     return Scaffold(
       key: scaffoldKey,
@@ -163,6 +166,7 @@ class _AddEditCarState extends State<AddEditCar> {
                                 child: CustomAppBar(
                                     text: S.of(context).newCar,
                                     icon: Icons.arrow_back_ios,
+                                    iconColor: Colors.white,
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     })),
@@ -170,6 +174,9 @@ class _AddEditCarState extends State<AddEditCar> {
                               tempImage,
                               setStateMain: this.setState,
                               index: 0,
+                              text: S.of(context).cover,
+                              height: 100,
+                              width: 100,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -200,11 +207,19 @@ class _AddEditCarState extends State<AddEditCar> {
                               height: 10,
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              color: Color.fromARGB(200, 61, 67, 74),
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              height: 565,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Color.fromARGB(200, 61, 67, 74),
+                              ),
                               child: Column(
                                 children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
                                         S.of(context).cardetails,
@@ -213,246 +228,296 @@ class _AddEditCarState extends State<AddEditCar> {
                                       )
                                     ],
                                   ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
                                   Padding(
                                     padding: EdgeInsets.all(20),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        CustomDropDown(
-                                          color: Colors.white,
-                                          radius: BorderRadius.circular(20),
-                                          selectedValue: carMaker,
-                                          onChange: carmakes == null ||
-                                                  carmakes.length == 0
-                                              ? null
-                                              : (int x) {
-                                                  setState(() {
-                                                    carMaker = x;
-                                                    getCarClass(carmakes);
-                                                  });
-                                                },
-                                          items: getCarMake(carmakes),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            CustomDropDown(
+                                              label: S.of(context).carMake,
+                                              color: Colors.white,
+                                              radius: BorderRadius.circular(20),
+                                              selectedValue: carMaker,
+                                              onChange: carmakes == null ||
+                                                      carmakes.length == 0
+                                                  ? null
+                                                  : (int x) {
+                                                      setState(() {
+                                                        carMaker = x;
+                                                        getCarClass(carmakes);
+                                                      });
+                                                    },
+                                              items: _carsMakers,
+                                            ),
+                                            CustomDropDown(
+                                              label: S.of(context).carclass,
+                                              color: Colors.white,
+                                              radius: BorderRadius.circular(20),
+                                              selectedValue: carClass,
+                                              onChange: CarClass == null
+                                                  ? null
+                                                  : (int x) {
+                                                      setState(() {
+                                                        carClass = x;
+                                                      });
+                                                    },
+                                              items: carClases,
+                                            ),
+                                          ],
                                         ),
                                         SizedBox(
                                           height: 10,
                                         ),
-                                        CustomDropDown(
-                                          color: Colors.white,
-                                          radius: BorderRadius.circular(20),
-                                          selectedValue: carClass,
-                                          onChange: CarClass == null
-                                              ? null
-                                              : (int x) {
-                                                  setState(() {
-                                                    carClass = x;
-                                                  });
-                                                },
-                                          items: carClases,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        CustomDropDown<String>(
-                                          color: Colors.white,
-                                          radius: BorderRadius.circular(20),
-                                          selectedValue: model,
-                                          onChange: carmakes == null ||
-                                                  carmakes.length == 0
-                                              ? null
-                                              : (String x) {
-                                                  setState(() {
-                                                    model = x;
-                                                  });
-                                                },
-                                          items: years,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        CustomDropDown(
-                                          color: Colors.white,
-                                          radius: BorderRadius.circular(20),
-                                          selectedValue: type,
-                                          onChange: carmakes == null ||
-                                                  carmakes.length == 0
-                                              ? null
-                                              : (String x) {
-                                                  setState(() {
-                                                    type = x;
-                                                  });
-                                                },
-                                          items: vehivalType,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              CustomDropDown<String>(
+                                                label: S.of(context).model,
+                                                color: Colors.white,
+                                                radius:
                                                     BorderRadius.circular(20),
-                                                color: Colors.white),
-                                            child: TextField(
-                                              controller: _priceControlelr,
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              decoration: InputDecoration(
-                                                fillColor: Colors.white,
-                                                hintText: S.of(context).price,
-                                                contentPadding:
-                                                    EdgeInsets.fromLTRB(
-                                                        20.0, 15.0, 20.0, 15.0),
-                                                border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0)),
+                                                selectedValue: model,
+                                                onChange: carmakes == null ||
+                                                        carmakes.length == 0
+                                                    ? null
+                                                    : (String x) {
+                                                        setState(() {
+                                                          model = x;
+                                                        });
+                                                      },
+                                                items: years,
                                               ),
-                                            )),
+                                              CustomDropDown(
+                                                label: S.of(context).type,
+                                                color: Colors.white,
+                                                radius:
+                                                    BorderRadius.circular(20),
+                                                selectedValue: type,
+                                                onChange: carmakes == null ||
+                                                        carmakes.length == 0
+                                                    ? null
+                                                    : (int x) {
+                                                        setState(() {
+                                                          type = x;
+                                                        });
+                                                      },
+                                                items: vehivalType,
+                                              )
+                                            ]),
                                         SizedBox(
                                           height: 10,
                                         ),
-                                        CustomDropDown(
-                                          color: Colors.white,
-                                          radius: BorderRadius.circular(20),
-                                          selectedValue: city,
-                                          onChange: CarClass == null
-                                              ? null
-                                              : (int x) {
-                                                  setState(() {
-                                                    city = x;
-                                                  });
-                                                },
-                                          items: Cities,
-                                        ),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Container(
+                                                  width: 127,
+
+                                                  height: 55,
+
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      color: Colors.white),
+                                                  child: TextField(
+                                                    controller:
+                                                        _priceControlelr,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    decoration: InputDecoration(
+                                                      fillColor: Colors.white,
+                                                      hintText:
+                                                          S.of(context).price,
+
+                                                      border: OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      20.0)),
+                                                    ),
+                                                  )),
+                                              CustomDropDown(
+                                                label: S.of(context).city,
+                                                color: Colors.white,
+                                                radius:
+                                                    BorderRadius.circular(20),
+                                                selectedValue: city,
+                                                onChange: CarClass == null
+                                                    ? null
+                                                    : (int x) {
+                                                        setState(() {
+                                                          city = x;
+                                                        });
+                                                      },
+                                                items: Cities,
+                                              )
+                                            ]),
                                         SizedBox(
                                           height: 10,
                                         ),
-                                        CustomDropDown(
-                                          color: Colors.white,
-                                          radius: BorderRadius.circular(20),
-                                          selectedValue: status,
-                                          onChange: CarClass == null
-                                              ? null
-                                              : (int x) {
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              CustomDropDown(
+                                                label: S.of(context).status,
+                                                color: Colors.white,
+                                                radius:
+                                                    BorderRadius.circular(20),
+                                                selectedValue: status,
+                                                onChange: (int x) {
                                                   setState(() {
                                                     status = x;
                                                   });
                                                 },
-                                          items: carStatus,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        CustomDropDown(
-                                          color: Colors.white,
-                                          radius: BorderRadius.circular(20),
-                                          selectedValue: deliveryAvailability,
-                                          onChange: CarClass == null
-                                              ? null
-                                              : (bool x) {
-                                                  setState(() {
-                                                    deliveryAvailability = x;
-                                                  });
-                                                },
-                                          items: availability,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                color: Colors.white),
-                                            child: TextField(
-                                              controller: _ageControlelr,
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              decoration: InputDecoration(
-                                                fillColor: Colors.white,
-                                                hintText: S.of(context).age,
-                                                contentPadding:
-                                                    EdgeInsets.fromLTRB(
-                                                        20.0, 15.0, 20.0, 15.0),
-                                                border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0)),
+                                                items: getcarStatus(context),
                                               ),
-                                            )),
-
+                                              CustomDropDown(
+                                                label: S
+                                                    .of(context)
+                                                    .deliveryToYouLcation,
+                                                color: Colors.white,
+                                                radius:
+                                                    BorderRadius.circular(20),
+                                                selectedValue:
+                                                    deliveryAvailability,
+                                                onChange: CarClass == null
+                                                    ? null
+                                                    : (bool x) {
+                                                        setState(() {
+                                                          deliveryAvailability =
+                                                              x;
+                                                        });
+                                                      },
+                                                items: getavailability(context),
+                                              )
+                                            ]),
                                         SizedBox(
                                           height: 10,
                                         ),
-                                        CustomDropDown(
-                                          color: Colors.white,
-                                          radius: BorderRadius.circular(20),
-                                          selectedValue: drivingLicences,
-                                          onChange: CarClass == null
-                                              ? null
-                                              : (String x) {
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Container(
+                                                  width: 127,
+                                                  height: 55,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      color: Colors.white),
+                                                  child: TextField(
+                                                    controller: _ageControlelr,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    decoration: InputDecoration(
+
+                                                      fillColor: Colors.white,
+                                                      hintText:
+                                                          S.of(context).age,
+
+                                                      border: OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      20.0)),
+                                                    ),
+                                                  )),
+                                              CustomDropDown(
+                                                label:
+                                                    S.of(context).drivinglicens,
+                                                color: Colors.white,
+                                                radius:
+                                                    BorderRadius.circular(20),
+                                                selectedValue: drivingLicences,
+                                                onChange: (String x) {
                                                   setState(() {
                                                     drivingLicences = x;
                                                   });
                                                 },
-                                          items: drivingLicencesStates,
-                                        ),
+                                                items: getdrivingLicencesStates(context),
+                                              )
+                                            ]),
                                         SizedBox(
                                           height: 10,
                                         ),
-                                        CustomDropDown(
-                                          color: Colors.white,
-                                          radius: BorderRadius.circular(20),
-                                          selectedValue: insuranceTypeVal,
-                                          onChange: CarClass == null
-                                              ? null
-                                              : (String x) {
-                                                  setState(() {
-                                                    insuranceTypeVal = x;
-                                                  });
-                                                },
-                                          items: insuranceType,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              CustomDropDown(
+                                                label: S.of(context).incType,
+                                                color: Colors.white,
+                                                radius:
                                                     BorderRadius.circular(20),
-                                                color: Colors.white),
-                                            child: TextField(
-                                              controller: _depositControlelr,
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              decoration: InputDecoration(
-                                                fillColor: Colors.white,
-                                                hintText: S.of(context).deposit,
-                                                contentPadding:
-                                                    EdgeInsets.fromLTRB(
-                                                        20.0, 15.0, 20.0, 15.0),
-                                                border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0)),
+                                                selectedValue: insuranceTypeVal,
+                                                onChange: CarClass == null
+                                                    ? null
+                                                    : (String x) {
+                                                        setState(() {
+                                                          insuranceTypeVal = x;
+                                                        });
+                                                      },
+                                                items: getinsuranceType(context),
                                               ),
-                                            )),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        CustomDropDown(
-                                          color: Colors.white,
-                                          radius: BorderRadius.circular(20),
-                                          selectedValue: adTypeValue,
-                                          onChange: CarClass == null
-                                              ? null
-                                              : (bool x) {
-                                                  setState(() {
-                                                    adTypeValue = x;
-                                                  });
-                                                },
-                                          items: adType,
-                                        )
+                                              Container(
+                                                  width: 127,
+                                                  height: 55,
+
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      color: Colors.white),
+                                                  child: TextField(
+                                                    controller:
+                                                        _depositControlelr,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    decoration: InputDecoration(
+                                                      fillColor: Colors.white,
+                                                      hintText:
+                                                          S.of(context).deposit,
+
+                                                      border: OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      20.0)),
+                                                    ),
+                                                  ))
+                                            ]),
+                                        if (currentUser.IsAdmin)
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                        if (currentUser.IsAdmin)
+                                          CustomDropDown(
+                                            label: S.of(context).carrenttype,
+                                            color: Colors.white,
+                                            radius: BorderRadius.circular(20),
+                                            selectedValue: adTypeValue,
+                                            onChange: CarClass == null
+                                                ? null
+                                                : (bool x) {
+                                                    setState(() {
+                                                      adTypeValue = x;
+                                                    });
+                                                  },
+                                            items: getadType(context),
+                                          )
                                       ],
                                     ),
                                   )
@@ -460,11 +525,17 @@ class _AddEditCarState extends State<AddEditCar> {
                               ),
                             ),
                             SizedBox(
-                              height: 30,
+                              height: 10,
                             ),
                             RaisedButton(
+
                               onPressed: () {
-                                if(_priceControlelr.value.text.trim() == '' || _ageControlelr.value.text.trim() == '' || _depositControlelr.value.text.trim() ==''||carClass == 0){
+                                if (_priceControlelr.value.text.trim() == '' ||
+                                    _ageControlelr.value.text.trim() == '' ||
+                                    _depositControlelr.value.text.trim() ==
+                                        '' ||
+                                    carClass == 0 ||
+                                    carMaker == 0) {
                                   Fluttertoast.showToast(
                                       msg: 'There is an empty field',
                                       toastLength: Toast.LENGTH_SHORT,
@@ -473,45 +544,50 @@ class _AddEditCarState extends State<AddEditCar> {
                                       backgroundColor: Colors.red,
                                       textColor: Colors.white,
                                       fontSize: 16.0);
-                                  return ;
+                                  return;
                                 }
-                                var searchForCar = carList.where((element) => element.CarClassID == carClass&&element.CarMakeID == carMaker);
-                                if (searchForCar.length == 0){
-                                  Scaffold.of(context).showSnackBar(SnackBar(content: Text("No Enough data for this car in database"),action: SnackBarAction(onPressed:()=>Navigator.pop(context) ,label: "ok",),));
 
-                                  ;
-                                return;
-                                }
-                                var carFormCarList = searchForCar.first;
                                 var car = Car(
-                                  CarMakeID:carMaker,
-                                  CarClassID:carClass,
-                                  CarImages: tempImage.where((element) => element!=null).map((e)  {
+                                  CarMakeID: carMaker,
+                                  CarClassID: carClass,
+                                  CarImages: tempImage
+                                      .where((element) => element != null)
+                                      .map((e) {
                                     var filePath = tempImage[0].path.split('/');
-                                    var fileName = filePath[filePath.length-1];
+                                    var fileName =
+                                        filePath[filePath.length - 1];
 
-                                    return CarImage(ImageStatus: 1,ImageURL:'data:${mime(fileName)};base64,'+base64Encode(e.readAsBytesSync()));
-
+                                    return CarImage(
+                                        ImageStatus: 1,
+                                        ImageURL:
+                                            'data:${mime(fileName)};base64,' +
+                                                base64Encode(
+                                                    e.readAsBytesSync()));
                                   }).toList(),
-                                  Model:int.parse(model),
-                                  Price:double.parse(_priceControlelr.value.text.trim()),
-                                  CityID:city,
-                                  Status:status,
-                                  MinimumAge:int.parse(_ageControlelr.value.text.trim()),
-                                  DrivingLicense:drivingLicences,
-                                  WithDelivery:deliveryAvailability ,
-                                  InsuranceAmount:double.parse(_depositControlelr.value.text.trim()),
-                                  InsuranceType:insuranceTypeVal,
-                                  Seats: carFormCarList.Seats,
-                                  IsPrime:adTypeValue,);
-                                if (car!=null)
-                                Navigator.pop(context,car);
+                                  Model: int.parse(model),
+                                  Price: double.parse(
+                                      _priceControlelr.value.text.trim()),
+                                  CityID: city,
+                                  Status: status,
+                                  UserID: currentUser.ID,
+                                  MinimumAge: int.parse(
+                                      _ageControlelr.value.text.trim()),
+                                  DrivingLicense: drivingLicences,
+                                  WithDelivery: deliveryAvailability,
+                                  InsuranceAmount: double.parse(
+                                      _depositControlelr.value.text.trim()),
+                                  InsuranceType: insuranceTypeVal,
+                                  Seats: type,
+                                  IsPrime: adTypeValue,
+                                );
+                                if (car != null)
+                                  Navigator.pop(context, car);
                                 else
                                   Navigator.pop(context);
                               },
-                              color: Color.fromARGB(250, 249, 26, 108),
+                              color: Color(0xffED3826),
                               child: Padding(
-                                padding: EdgeInsets.all(20),
+                                padding: EdgeInsets.all(15),
                                 child: Text(
                                   S.of(context).submit,
                                   style: TextStyle(
@@ -520,9 +596,7 @@ class _AddEditCarState extends State<AddEditCar> {
                               ),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50),
-                                  side: BorderSide(
-                                      color:
-                                          Color.fromARGB(250, 249, 26, 108))),
+                                  side: BorderSide(color: Color(0xffED3826))),
                             ),
                             SizedBox(
                               height: 10,
@@ -530,5 +604,46 @@ class _AddEditCarState extends State<AddEditCar> {
                           ])));
       }))),
     );
+  }
+
+  getinsuranceType(BuildContext context) {
+       final List<FiealdSearch> insuranceType = [
+       FiealdSearch(S.of(context).full, 'FullInsurance'),
+       FiealdSearch(S.of(context).third, 'ThirdPartyInsurance')
+     ];
+       return insuranceType;
+  }
+
+  getavailability(BuildContext context) {
+    final List<FiealdSearch> availability = [
+      FiealdSearch(S.of(context).yes, true),
+      FiealdSearch(S.of(context).no, false)
+    ];
+    return availability;
+  }
+
+  getcarStatus(BuildContext context) {
+    final List<FiealdSearch> carStatus = [
+      FiealdSearch(S.of(context).available, 1),
+      FiealdSearch(S.of(context).booked, 0)
+    ];
+    return carStatus;
+  }
+
+  getdrivingLicencesStates(BuildContext context) {
+    final List<FiealdSearch> drivingLicencesStates = [
+      FiealdSearch(S.of(context).local, 'LocalDrivingLicense'),
+      FiealdSearch(S.of(context).International, 'InternationalDrivingLicense'),
+      FiealdSearch(S.of(context).SpecificType, 'SpecificTypeIsNotRequired')
+    ];
+    return drivingLicencesStates;
+  }
+
+  getadType(BuildContext context) {
+    final List<FiealdSearch> adType = [
+      FiealdSearch(S.of(context).premium, true),
+      FiealdSearch(S.of(context).normal, false)
+    ];
+    return adType;
   }
 }
