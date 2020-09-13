@@ -241,7 +241,7 @@ Widget cardCart(FullCarInfo car, Color colorFondo, BuildContext context,
                   height: 50,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/Img/booked.png'))),
+                          image: AssetImage('assets/Img/Booked.png'))),
                 ),
             ],
           )
