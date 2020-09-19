@@ -279,7 +279,8 @@ class _ProfileState extends State<Profile> {
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
-                                              fontSize: 14),
+                                              fontSize:  Theme.of(context).platform == TargetPlatform.iOS?12:14
+              ),
                                         ),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
