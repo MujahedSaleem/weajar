@@ -19,9 +19,11 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en_US';
 
-  static m1(progName) => "You don\'t have ${progName}";
+  static m2(progName) => "You don\'t have ${progName}";
 
   static m0(name) => "Hello ${name}";
+
+  static m1(carName) => "Are you sure delete ${carName}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
@@ -33,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "about4" : MessageLookupByLibrary.simpleMessage("We want to bring the world to you. From choosing a suitable car to finding the best price, we want you to have all the options at your fingertips.\n\n\"That\'s why we\'re focused on making car rental better for everyone. This spirit shines through everything we do."),
     "about5" : MessageLookupByLibrary.simpleMessage("Want to Join us? Contact us with pleasure"),
     "aboutus" : MessageLookupByLibrary.simpleMessage("About us"),
+    "acs" : MessageLookupByLibrary.simpleMessage("Ascending"),
     "advanceSearch" : MessageLookupByLibrary.simpleMessage("Advance Search"),
     "advertisementType" : MessageLookupByLibrary.simpleMessage("Advertisement Type"),
     "aed" : MessageLookupByLibrary.simpleMessage("AED"),
@@ -40,9 +43,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "age" : MessageLookupByLibrary.simpleMessage("Age"),
     "all" : MessageLookupByLibrary.simpleMessage("All"),
     "allOffers" : MessageLookupByLibrary.simpleMessage("All Offers"),
+    "approve" : MessageLookupByLibrary.simpleMessage("Approve"),
     "available" : MessageLookupByLibrary.simpleMessage("Available"),
     "booked" : MessageLookupByLibrary.simpleMessage("Booked"),
     "callNow" : MessageLookupByLibrary.simpleMessage("Call Now"),
+    "cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "carMake" : MessageLookupByLibrary.simpleMessage("Car Make"),
     "carPrice" : MessageLookupByLibrary.simpleMessage("Car Price"),
     "carSpecification" : MessageLookupByLibrary.simpleMessage("Car Specifications"),
@@ -55,11 +60,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "contactus" : MessageLookupByLibrary.simpleMessage("Contact Us "),
     "cover" : MessageLookupByLibrary.simpleMessage("Cover photo"),
     "currentPass" : MessageLookupByLibrary.simpleMessage("Current Password"),
+    "date" : MessageLookupByLibrary.simpleMessage("Date"),
+    "deletecar" : MessageLookupByLibrary.simpleMessage("Delete Car"),
     "deliveryToYouLcation" : MessageLookupByLibrary.simpleMessage("Delivery to you location"),
     "deposit" : MessageLookupByLibrary.simpleMessage("Deposit"),
-    "dontHaveProg" : m1,
+    "desc" : MessageLookupByLibrary.simpleMessage("Descending"),
+    "dontHaveProg" : m2,
     "drivingLicences" : MessageLookupByLibrary.simpleMessage("Driving Licences"),
     "drivinglicens" : MessageLookupByLibrary.simpleMessage("Driving License"),
+    "edit" : MessageLookupByLibrary.simpleMessage("Edit"),
     "editprofile" : MessageLookupByLibrary.simpleMessage("Edit Profile"),
     "email" : MessageLookupByLibrary.simpleMessage("Email"),
     "emailus" : MessageLookupByLibrary.simpleMessage("Email Us"),
@@ -96,8 +105,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "save" : MessageLookupByLibrary.simpleMessage("Save"),
     "search" : MessageLookupByLibrary.simpleMessage("Search"),
     "signIn" : MessageLookupByLibrary.simpleMessage("Sign In"),
+    "sort" : MessageLookupByLibrary.simpleMessage("Sort"),
     "status" : MessageLookupByLibrary.simpleMessage("Status"),
     "submit" : MessageLookupByLibrary.simpleMessage("Submit"),
+    "sureDelete" : m1,
     "third" : MessageLookupByLibrary.simpleMessage("Third Party"),
     "to" : MessageLookupByLibrary.simpleMessage("To"),
     "type" : MessageLookupByLibrary.simpleMessage("Type"),

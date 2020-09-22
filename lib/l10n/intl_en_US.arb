@@ -84,7 +84,16 @@
   "about2": "Eradicating the conventional ways of renting a car, WE AJAR brings convenience to you at its finest.",
   "about3": "Dedicated to making car rental as simple as possible, we help customers find the best options to book the perfect car for them.",
   "about4": "We want to bring the world to you. From choosing a suitable car to finding the best price, we want you to have all the options at your fingertips.\n\n\"That's why we're focused on making car rental better for everyone. This spirit shines through everything we do.",
-  "about5": "Want to Join us? Contact us with pleasure"
+  "about5": "Want to Join us? Contact us with pleasure",
+  "date": "Date",
+  "acs" : "Ascending",
+  "desc": "Descending",
+  "sort": "Sort",
+  "sureDelete": "Are you sure delete {carName}",
+  "deletecar": "Delete Car",
+  "cancel": "Cancel",
+  "approve": "Approve",
+  "edit": "Edit"
 
 
 

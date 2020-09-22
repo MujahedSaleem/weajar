@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:weajar/Pages/AddNewCar.dart';
 import 'package:weajar/Pages/EditProfile.dart';
 import 'package:weajar/Pages/weCarList.dart';
+import 'package:weajar/Repo.dart';
 import 'package:weajar/components/AppBar.dart';
 import 'package:weajar/components/CarList.dart';
 import 'package:weajar/components/HorzLineDivider.dart';
@@ -40,6 +41,7 @@ class _ProfileState extends State<Profile> {
   List<Car> _cars;
   LoginUser currentUser;
   List<CarMake> _carsMakers;
+  final repo = Repo();
   var auth = AuthenticationService();
   bool refresh = false;
 
@@ -62,7 +64,7 @@ class _ProfileState extends State<Profile> {
       }
       _cars = nums[0];
       filteredRecored = Set();
-
+      repo.fullCarInfo = _cars;
       _carsMakers = nums[1];
       if (_cars.isEmpty) {
         setState(() {
@@ -75,6 +77,7 @@ class _ProfileState extends State<Profile> {
           var carsInfo = _cars.map((e) {
             var carMake =
                 _carsMakers.firstWhere((element) => element.ID == e.CarMakeID);
+            repo.CarMakers = _carsMakers;
             return FullCarInfo(
                 CarImages: List<CarImage>.from(e.CarImages).toList(),
                 CarClass: carMake.CarClasses.firstWhere(
@@ -88,6 +91,7 @@ class _ProfileState extends State<Profile> {
                 Seats: e.Seats,
                 City: e.CityID,
                 Status: e.Status,
+                ID: e.ID,
                 WithDelivery: e.WithDelivery,
                 IsPrime: e.IsPrime ?? false,
                 Price: e.Price);
@@ -279,8 +283,11 @@ class _ProfileState extends State<Profile> {
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
-                                              fontSize:  Theme.of(context).platform == TargetPlatform.iOS?12:14
-              ),
+                                              fontSize:
+                                                  Theme.of(context).platform ==
+                                                          TargetPlatform.iOS
+                                                      ? 12
+                                                      : 14),
                                         ),
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
@@ -312,6 +319,9 @@ class _ProfileState extends State<Profile> {
                                   color: Color(0xff3D434A),
                                   fontColor: Colors.white,
                                   carList: filteredRecored.toList(),
+                                  needload:(){
+                                    _loadMore() ;
+                                  },
                                   onRefresh: () async {
                                     setState(() {
                                       refresh = true;

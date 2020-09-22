@@ -11,7 +11,7 @@ class Booked extends StatelessWidget {
         child: Transform(
           alignment: Alignment.center,
           transform: Matrix4.rotationY((Intl.getCurrentLocale() == 'ar_AE') ? 3.14:0),
-          child:  Image.asset('assets/Img/Booked.png'),
+          child:  Image.asset('assets/Img/booked.png'),
         ),
 
       ),Positioned(top: Intl.getCurrentLocale() == 'ar_AE'?-7:-2,child:

@@ -21,6 +21,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m0(name) => "مرحبا ${name}";
 
+  static m1(carName) => "هل تريد حذف ${carName}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "International" : MessageLookupByLibrary.simpleMessage("دولي"),
@@ -31,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "about4" : MessageLookupByLibrary.simpleMessage(" لماذا Weajar ؟\n\nنريد جلب كافة الخيارات المتاحة بالسوق بين يديك و انت في منزلك دون التعب و اضاعة الوقت لايجاد سيارة تليق بطموحاتك. لهذا نحن نركز على جعل عملية تأجير السيارات افضل للجميع مع ضمان حصولك على افضل سعر متاح في سوق تأجير السيارات."),
     "about5" : MessageLookupByLibrary.simpleMessage("تريد الانضمام لعائلتنا؟ من فضلك تواصل معنا"),
     "aboutus" : MessageLookupByLibrary.simpleMessage("من نحن"),
+    "acs" : MessageLookupByLibrary.simpleMessage("تصاعدي"),
     "advanceSearch" : MessageLookupByLibrary.simpleMessage("البحث المتقدم"),
     "advertisementType" : MessageLookupByLibrary.simpleMessage("نوع الإعلان"),
     "aed" : MessageLookupByLibrary.simpleMessage("درهم"),
@@ -38,9 +41,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "age" : MessageLookupByLibrary.simpleMessage("العمر"),
     "all" : MessageLookupByLibrary.simpleMessage("كل"),
     "allOffers" : MessageLookupByLibrary.simpleMessage("كل العروض"),
+    "approve" : MessageLookupByLibrary.simpleMessage("موافقة"),
     "available" : MessageLookupByLibrary.simpleMessage("متوفر"),
     "booked" : MessageLookupByLibrary.simpleMessage("محجوز"),
     "callNow" : MessageLookupByLibrary.simpleMessage("اتصل الآن"),
+    "cancel" : MessageLookupByLibrary.simpleMessage("الغاء"),
     "carMake" : MessageLookupByLibrary.simpleMessage("الشركة المصنّعة"),
     "carPrice" : MessageLookupByLibrary.simpleMessage("السعر"),
     "carSpecification" : MessageLookupByLibrary.simpleMessage("ميزات السيارة"),
@@ -53,10 +58,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "contactus" : MessageLookupByLibrary.simpleMessage("تواصل معنا "),
     "cover" : MessageLookupByLibrary.simpleMessage("الصورة الرئيسية"),
     "currentPass" : MessageLookupByLibrary.simpleMessage("كلمة السر الحالية "),
+    "date" : MessageLookupByLibrary.simpleMessage("التاريخ"),
+    "deletecar" : MessageLookupByLibrary.simpleMessage("حذف سيارة"),
     "deliveryToYouLcation" : MessageLookupByLibrary.simpleMessage("خدمة التوصيل "),
     "deposit" : MessageLookupByLibrary.simpleMessage("قيمة التأمين"),
+    "desc" : MessageLookupByLibrary.simpleMessage("تنازلي"),
     "drivingLicences" : MessageLookupByLibrary.simpleMessage("رخصة السياقة"),
     "drivinglicens" : MessageLookupByLibrary.simpleMessage("رخصة السياقة"),
+    "edit" : MessageLookupByLibrary.simpleMessage("تعديل"),
     "editprofile" : MessageLookupByLibrary.simpleMessage("تعديل الملف الشخصي"),
     "email" : MessageLookupByLibrary.simpleMessage("البريد الاكتروني"),
     "emailus" : MessageLookupByLibrary.simpleMessage("راسلنا"),
@@ -93,8 +102,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "save" : MessageLookupByLibrary.simpleMessage("حفظ"),
     "search" : MessageLookupByLibrary.simpleMessage("البحث"),
     "signIn" : MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+    "sort" : MessageLookupByLibrary.simpleMessage("ترتيب"),
     "status" : MessageLookupByLibrary.simpleMessage("الحالة"),
     "submit" : MessageLookupByLibrary.simpleMessage("إضافة"),
+    "sureDelete" : m1,
     "third" : MessageLookupByLibrary.simpleMessage("ضد الغير"),
     "to" : MessageLookupByLibrary.simpleMessage("إلى"),
     "type" : MessageLookupByLibrary.simpleMessage("النوع "),

@@ -1,19 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:weajar/Pages/EditCar.dart';
+import 'package:weajar/Repo.dart';
 import 'package:weajar/components/AppBar.dart';
 import 'package:weajar/components/CustomButton.dart';
 import 'package:weajar/components/CustomCursoul.dart';
 import 'package:weajar/components/textWithPadding.dart';
 import 'package:weajar/generated/l10n.dart';
+import 'package:weajar/model/car.dart';
+import 'package:weajar/service/AuthenticationService.dart';
+import 'package:weajar/service/itemFetcher.dart';
 import 'package:weajar/viewModels/FullCarInfo.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
 
-class WeCarDetails extends StatelessWidget {
+class WeCarDetails extends StatefulWidget {
+  static const routeName = 'weCarDetails';
+
+  @override
+  _WeCarDetailsState createState() => _WeCarDetailsState();
+}
+
+class _WeCarDetailsState extends State<WeCarDetails> {
   static const String whatsApp = "WhatsApp";
   static const String tel = "Tel";
   static const String email = "E-mail";
   static const String map = "map";
+  bool isOnDelete = true;
+  final repo = Repo();
+  final _itemFetcher = ItemFetcher();
+  var auth = AuthenticationService();
+  final _carService = ItemFetcher();
   void launchApp(
       {String phone,
       String message,
@@ -32,7 +49,7 @@ class WeCarDetails extends StatelessWidget {
             return "whatsapp://send?phone=$phone&text=${Uri.parse(message)}";
           }
           break;
-        case WeCarDetails.email:
+        case _WeCarDetailsState.email:
           return 'mailto:$email?subject=""&body=""';
           break;
         case tel:
@@ -52,14 +69,14 @@ class WeCarDetails extends StatelessWidget {
     }
   }
 
-  static const routeName = 'weCarDetails';
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+  FullCarInfo car;
 
   @override
   Widget build(BuildContext context) {
-    final FullCarInfo car =
-        ModalRoute.of(context).settings.arguments as FullCarInfo;
-
+    FullCarInfo _car = ModalRoute.of(context).settings.arguments as FullCarInfo;
+    if(car==null)
+     car = _car;
     return Scaffold(
         key: scaffoldKey,
         backgroundColor: Color(0xFF48484A),
@@ -245,10 +262,7 @@ class WeCarDetails extends StatelessWidget {
                           // ],)
                           //
 
-
-
-
-                      Column(
+                          Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -377,10 +391,170 @@ class WeCarDetails extends StatelessWidget {
                             )
                           ],
                         )),
+                    if (!auth.IsTokenNotActive())
+                      SizedBox(
+                        height: 10,
+                      ),
+                    if (!auth.IsTokenNotActive())
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ButtonTheme(
+                            height: 50,
+                            minWidth: MediaQuery.of(context).size.width * 0.8,
+                            child: RaisedButton(
+                              color: Color.fromARGB(200, 18, 65, 206),
+                              child: Text(
+                                S.of(context).edit,
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.white),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  side: BorderSide(
+                                      color: Color.fromARGB(200, 18, 65, 206))),
+                              onPressed: () async {
+                                Car carfull = repo.fullCarInfo
+                                    .firstWhere((e) => e.ID == car.ID);
+                                var result = await Navigator.of(context)
+                                    .pushNamed(EditCar.routeName, arguments: {
+                                  'carMaker': repo.CarMakers,
+                                  'car': carfull
+                                });
+                                if (result != null) {
+                                  var success =  await _itemFetcher.UpdateCar(result);
+                                  if (success is bool && !success) {
+                                    Scaffold.of(context).showSnackBar(SnackBar(
+                                      content: Text("Something went wrong"),
+                                    ));
+                                  } else {
+                                    setState(() {
+                                      var e = success as Car;
+                                     Car carc =  repo.fullCarInfo
+                                          .firstWhere((e) => e.ID == e.ID);
+                                      carc = e;
+                                      var carMake = repo.CarMakers.firstWhere(
+                                          (element) =>
+                                              element.ID == e.CarMakeID);
+                                      var carInfo = FullCarInfo(
+                                          CarImages:
+                                              List<CarImage>.from(e.CarImages)
+                                                  .toList(),
+                                          CarClass:
+                                              carMake.CarClasses.firstWhere(
+                                                  (element) =>
+                                                      element.ID ==
+                                                      e.CarClassID).NameEn,
+                                          CarMake: carMake.NameEn,
+                                          Model: e.Model,
+                                          ID:e.ID,
+                                          DrivingLicense: e.DrivingLicense,
+                                          MinimumAge: e.MinimumAge,
+                                          InsuranceType: e.InsuranceType,
+                                          InsuranceAmount: e.InsuranceAmount,
+                                          Seats: e.Seats,
+                                          City: e.CityID,
+                                          Status: e.Status,
+                                          WithDelivery: e.WithDelivery,
+                                          IsPrime: e.IsPrime ?? false,
+                                          Price: e.Price);
+                                      car = carInfo;
+
+                                    });
+                                  }
+                                }
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    if (!auth.IsTokenNotActive())
+                      SizedBox(
+                        height: 10,
+                      ),
+                    if (!auth.IsTokenNotActive())
+                      SizedBox(
+                        height: 10,
+                      ),
+                    if (!auth.IsTokenNotActive())
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ButtonTheme(
+                            height: 50,
+                            minWidth: MediaQuery.of(context).size.width * 0.8,
+                            child: RaisedButton(
+                              color: Color.fromARGB(200, 237, 56, 38),
+                              child: Text(
+                                S.of(context).deletecar,
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.white),
+                              ),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  side: BorderSide(
+                                      color: Color.fromARGB(200, 237, 56, 38))),
+                              onPressed: () {
+                                showAlertDialog(context, car);
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    if (!auth.IsTokenNotActive())
+                      SizedBox(
+                        height: 10,
+                      ),
                   ],
                 )
               ])));
         })));
+  }
+
+  showAlertDialog(BuildContext context, FullCarInfo car) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text(S.of(context).cancel),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text(S.of(context).approve),
+      onPressed: () {
+        if (isOnDelete) {
+          _carService.DeleteCar(car.ID, auth.getCurrentUser().ID).then((a) {
+            isOnDelete = false;
+            if (a) {
+              Navigator.of(context, rootNavigator: true).pop();
+              Navigator.of(context).pop({'reload': true});
+            } else {
+              Navigator.of(context, rootNavigator: true).pop();
+            }
+          });
+        }
+      },
+    ); // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(S.of(context).deletecar),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text(S.of(context).sureDelete(car.CarMake)),
+          ],
+        ),
+      ),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    ); // ow the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   String getDrivingLicense(String drivingLicense, BuildContext context) {

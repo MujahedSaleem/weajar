@@ -822,6 +822,96 @@ class S {
       args: [],
     );
   }
+
+  /// `Date`
+  String get date {
+    return Intl.message(
+      'Date',
+      name: 'date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ascending`
+  String get acs {
+    return Intl.message(
+      'Ascending',
+      name: 'acs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Descending`
+  String get desc {
+    return Intl.message(
+      'Descending',
+      name: 'desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sort`
+  String get sort {
+    return Intl.message(
+      'Sort',
+      name: 'sort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure delete {carName}`
+  String sureDelete(Object carName) {
+    return Intl.message(
+      'Are you sure delete $carName',
+      name: 'sureDelete',
+      desc: '',
+      args: [carName],
+    );
+  }
+
+  /// `Delete Car`
+  String get deletecar {
+    return Intl.message(
+      'Delete Car',
+      name: 'deletecar',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Approve`
+  String get approve {
+    return Intl.message(
+      'Approve',
+      name: 'approve',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get edit {
+    return Intl.message(
+      'Edit',
+      name: 'edit',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

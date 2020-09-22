@@ -185,9 +185,31 @@ class _WeCarListState extends State<WeCarList>
                         e.Price <=
                             (JsonDecoder()
                                 .convert(searchQueary.price)['toVal'])))
-            .toList()).toSet();
+            .toList()..sort((a, b) => compareto(a,b,searchQueary.sort))).toSet();
       });
     }
+  }
+  int compareto(var a,var b,int sortby){
+    var _a = a.toJson();
+    var _b = b.toJson();
+      switch (sortby){
+        case 0:
+          return _a["Price"].compareTo (_b["Price"]);
+        case 1:
+          return _b["Price"].compareTo(_a["Price"]);
+        case 2:
+          return _a["CreationDate"] == null ||  _b["CreationDate"]?0 : DateTime.parse(_a["CreationDate"]).compareTo(DateTime.parse(_b["CreationDate"]));
+        case 3:
+          return _a["CreationDate"] == null ||  _b["CreationDate"]?0 : DateTime.parse(_b["CreationDate"]).compareTo(DateTime.parse(_a["CreationDate"]));
+        case 4:
+          return int.parse(_a["Model"] ).compareTo (int.parse(_b["Model"]));
+
+        case 5:
+          return int.parse(_b["Model"]) .compareTo (int.parse(_a["Model"]));
+
+
+
+      }
   }
 
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();

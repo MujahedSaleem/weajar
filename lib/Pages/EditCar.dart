@@ -17,14 +17,15 @@ import 'package:weajar/service/AuthenticationService.dart';
 import 'package:weajar/service/CitiesFetcher.dart';
 import 'package:weajar/service/itemFetcher.dart';
 import 'package:mime_type/mime_type.dart';
+import 'package:weajar/viewModels/FullCarInfo.dart';
 
-class AddEditCar extends StatefulWidget {
-  static const String routeName = "addeditcar";
+class EditCar extends StatefulWidget {
+  static const String routeName = "EditCar";
   @override
-  _AddEditCarState createState() => _AddEditCarState();
+  _EditCarState createState() => _EditCarState();
 }
 
-class _AddEditCarState extends State<AddEditCar> {
+class _EditCarState extends State<EditCar> {
   final _cityFetcher = CitiesFetcher();
 
   var repo = Repo();
@@ -51,7 +52,7 @@ class _AddEditCarState extends State<AddEditCar> {
   TextEditingController _depositControlelr;
   List<FiealdSearch<int>> Cities;
   List<FiealdSearch<int>> carClases = [FiealdSearch("Class", 0)];
-
+List<String> networkImages;
 
 
 
@@ -134,10 +135,32 @@ class _AddEditCarState extends State<AddEditCar> {
   @override
   Widget build(BuildContext context) {
     final List<CarMake> carmakes = (ModalRoute.of(context).settings.arguments
-        as Map<String, List<CarMake>>)['carMaker'];
+        as Map<String,dynamic>)['carMaker'];
+    final Car carforEdit = (ModalRoute.of(context).settings.arguments
+   as  Map<String,dynamic> )['car'];
     if(carMaker == null){
     getCarMake(carmakes);
+    carMaker = _carsMakers.where((e) => e.Key == carforEdit.CarMakeID).first.Key;
     getCarClass(carmakes);
+    carClass = carClases.where((e) => e.Key == carforEdit.CarClassID).first.Key;
+    model = "${carforEdit.Model}";
+    _priceControlelr.text = "${carforEdit.Price}";
+    city = Cities.firstWhere((e) => e.Key == carforEdit.CityID).Key;
+    status = carforEdit.Status;
+    _ageControlelr.text = "${carforEdit.MinimumAge}";
+    drivingLicences = carforEdit.DrivingLicense;
+    deliveryAvailability = carforEdit.WithDelivery;
+    _depositControlelr.text = "${carforEdit.InsuranceAmount}";
+    insuranceTypeVal = carforEdit.InsuranceType;
+    type = carforEdit.Seats;
+    adTypeValue = carforEdit.IsPrime;
+    networkImages = carforEdit.CarImages.map((e) => 'https://api.weajar.com/img${e.ImageURL}').toList();
+    if (networkImages.length <5){
+      var _length = networkImages.length;
+      for(int i =0;i< 5- _length;i++ ){
+        networkImages.add(null);
+      }
+    }
     }
 
     final List<Car> carList = repo.fullCarInfo;
@@ -177,6 +200,7 @@ class _AddEditCarState extends State<AddEditCar> {
                               text: S.of(context).cover,
                               height: 100,
                               width: 100,
+                              netWorkImag: networkImages,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -185,21 +209,29 @@ class _AddEditCarState extends State<AddEditCar> {
                                   tempImage,
                                   setStateMain: this.setState,
                                   index: 1,
+                                  netWorkImag: networkImages,
+
                                 ),
                                 ImageViewr(
                                   tempImage,
                                   setStateMain: this.setState,
                                   index: 2,
+                                  netWorkImag: networkImages,
+
                                 ),
                                 ImageViewr(
                                   tempImage,
                                   setStateMain: this.setState,
                                   index: 3,
+                                  netWorkImag: networkImages,
+
                                 ),
                                 ImageViewr(
                                   tempImage,
                                   setStateMain: this.setState,
                                   index: 4,
+                                  netWorkImag: networkImages,
+
                                 ),
                               ],
                             ),
@@ -547,25 +579,43 @@ class _AddEditCarState extends State<AddEditCar> {
                                       fontSize: 16.0);
                                   return;
                                 }
+                                var carImages = List<CarImage>();
+                                for(int i=0;i<networkImages.length;i++){
+                                  if(networkImages[i] != null && networkImages[i]!="delete"){
+                                    var carImage = carforEdit.CarImages[i];
+                                    carImages.add(carImage);
+                                  }else if (networkImages[i]=="delete"){
+                                    var carImage = carforEdit.CarImages[i];
+                                    carImage.ImageStatus = 2;
+                                    carImages.add(carImage);
 
+                                  }
+                                }
+                                var paths = tempImage.where((element) => element!=null).toList();
+                               if( paths.length >0 ){
+                                var filePath = paths.first.path?.split('/');
+
+                                carImages.addAll(tempImage
+                                    .where((element) => element != null)
+                                    .map((e) {
+                                  var fileName =
+                                  filePath[filePath.length - 1];
+
+                                  return CarImage(
+                                    CarID: carforEdit.ID,
+                                      ImageStatus: 1,
+                                      ImageURL:
+                                      'data:${mime(fileName)};base64,' +
+                                          base64Encode(
+                                              e.readAsBytesSync()));
+                                }).toList());
+}
                                 var car = Car(
                                   CarMakeID: carMaker,
                                   CarClassID: carClass,
-                                  CarImages: tempImage
-                                      .where((element) => element != null)
-                                      .map((e) {
-                                    var filePath = tempImage[0].path.split('/');
-                                    var fileName =
-                                        filePath[filePath.length - 1];
-
-                                    return CarImage(
-                                        ImageStatus: 1,
-                                        ImageURL:
-                                            'data:${mime(fileName)};base64,' +
-                                                base64Encode(
-                                                    e.readAsBytesSync()));
-                                  }).toList(),
+                                  CarImages: carImages ,
                                   Model: int.parse(model),
+                                  ID: carforEdit.ID,
                                   Price: double.parse(
                                       _priceControlelr.value.text.trim()),
                                   CityID: city,
@@ -590,7 +640,7 @@ class _AddEditCarState extends State<AddEditCar> {
                               child: Padding(
                                 padding: EdgeInsets.all(15),
                                 child: Text(
-                                  S.of(context).submit,
+                                  S.of(context).edit,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 18),
                                 ),

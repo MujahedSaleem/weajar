@@ -25,4 +25,5 @@ class CarMakeFetcher {
     _currentPage++;
     return list;
   }
+
 }

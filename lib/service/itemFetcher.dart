@@ -13,6 +13,7 @@ class ItemFetcher {
   final _count = 103;
   final _itemsPerPage = 5;
   int _currentPage = 0;
+
   // This async function simulates fetching results from Internet, etc.
   Future<List<Car>> fetchCars() async {
     Map<String, String> header = {
@@ -26,7 +27,7 @@ class ItemFetcher {
     var data = await client.post("$_baseUrl/GetCars", headers: header);
     var cars = json.decode(data.body);
     List<Car> listx =
-        List.from(cars["Data"]).map((e) => Car.fromJson(e)).toList();
+    List.from(cars["Data"]).map((e) => Car.fromJson(e)).toList();
     list.addAll(listx);
     return list;
   }
@@ -40,7 +41,7 @@ class ItemFetcher {
     var data = await client.post("$_baseUrl/GetActiveCars");
     var cars = json.decode(data.body);
     List<Car> listx =
-        List.from(cars["Data"]).map((e) => Car.fromJson(e)).toList();
+    List.from(cars["Data"]).map((e) => Car.fromJson(e)).toList();
     list.addAll(listx);
     _currentPage++;
     return list;
@@ -73,8 +74,36 @@ class ItemFetcher {
     }
     var cars = json.decode(data.body);
     List<Car> listx =
-        List.from(cars["Data"]).map((e) => Car.fromJson(e)).toList();
+    List.from(cars["Data"]).map((e) => Car.fromJson(e)).toList();
     list.addAll(listx);
     return list;
+  }
+
+  DeleteCar(int carID, int userId) async {
+    var header = {
+      'accept': 'application/json',
+      'authorization': await auth.getCurrentToken(),
+      'content-type': 'application/json',
+      'UserID': '$userId'
+    };
+
+    var result =
+    await client.post(
+        "$_baseUrl/Delete?id=$carID", headers: header);
+    if (result.statusCode == 200) return true;
+    return false;
+  }
+
+  Future UpdateCar(Car car) async {
+    var header = {
+      'accept': 'application/json',
+      'authorization': await auth.getCurrentToken(),
+      'content-type': 'application/json'
+    };
+
+    var result = await client.post("$_baseUrl/Update",
+        body: car.toJsonString(), headers: header);
+    if (result.statusCode == 200) return Car.fromJson(JsonDecoder().convert(result.body)["Data"]);
+    return false;
   }
 }

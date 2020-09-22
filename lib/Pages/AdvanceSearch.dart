@@ -30,9 +30,11 @@ class _AdvanceSearchState extends State<AdvanceSearch> {
   String from = 'All';
   String to = 'All';
   int city = 0;
+  int sort = 5;
   List<FiealdSearch<int>> carClases = [];
   List<FiealdSearch<int>> Cities = [];
   List<FiealdSearch> _carsMakers;
+  List<FiealdSearch> SortList;
 
   getCarMake(List<CarMake> carmakes) {
     _carsMakers = carmakes.map((e) => FiealdSearch(e.NameEn, e.ID)).toList();
@@ -60,6 +62,7 @@ class _AdvanceSearchState extends State<AdvanceSearch> {
         Cities = repo.allCity.map((e) => FiealdSearch(e.NameEn, e.ID)).toList();
       });
     }
+
   }
 
   void getCarClass(List<CarMake> carmakes) {
@@ -96,6 +99,14 @@ class _AdvanceSearchState extends State<AdvanceSearch> {
       getCarMake(carmakes);
       getCarClass(carmakes);
     }
+    SortList = [
+      FiealdSearch('${S.of(context).price} ${S.of(context).acs}',0),
+      FiealdSearch('${S.of(context).price} ${S.of(context).desc}',1),
+      FiealdSearch('${S.of(context).date} ${S.of(context).acs}',2),
+      FiealdSearch('${S.of(context).date} ${S.of(context).desc}',3),
+      FiealdSearch('${S.of(context).model} ${S.of(context).acs}',4),
+      FiealdSearch('${S.of(context).model} ${S.of(context).desc}',5),
+    ];
     if(Cities != null && Cities[0].Key != 0)
     Cities.insert(0, FiealdSearch(S.of(this.context).all, 0));
 
@@ -109,7 +120,6 @@ class _AdvanceSearchState extends State<AdvanceSearch> {
       FiealdSearch('Sedan', '2'),
       FiealdSearch('Cross over', '1')
     ];
-
     final List<FiealdSearch> Price = [
       FiealdSearch(S.of(context).all, 'null'),
       FiealdSearch('50 - 1000', '{"fromVal":50,"toVal":1000}'),
@@ -318,31 +328,44 @@ class _AdvanceSearchState extends State<AdvanceSearch> {
                           height: 20,
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             if (Cities != null)
-                              CustomDropDown(
-                                label: S.of(context).city,
-                                hight: 55,
-                                color: Colors.white,
-                                radius: BorderRadius.circular(40),
-                                selectedValue: city,
-                                onChange: (int x) {
-                                  setState(() {
-                                    city = x;
-                                  });
-                                },
-                                items: Cities,
-                              ),
+                      CustomDropDown(
+                      label: S.of(context).city,
+            hight: 55,
+            color: Colors.white,
+            radius: BorderRadius.circular(40),
+            selectedValue: city,
+            onChange: (int x) {
+              setState(() {
+                city = x;
+              });
+            },
+            items: Cities,
+          ),
+                            VerLineDivider(),
+
+                            CustomDropDown(
+                            label: S.of(context).sort,
+                            hight: 55,
+                            color: Colors.white,
+                            radius: BorderRadius.circular(40),
+                            selectedValue: sort,
+                            onChange: (int x) {
+                            setState(() {
+                            sort = x;
+                            });
+                            },
+                            items: SortList,
+                            ),
+
                           ],
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
-                        HorzLineDivider(
-                          color: Colors.grey[100],
-                          width: MediaQuery.of(context).size.width * 0.6,
-                        ),
+                        HorzLineDivider(color: Colors.grey[100]),
                         SizedBox(
                           height: 50,
                         ),
@@ -364,7 +387,7 @@ class _AdvanceSearchState extends State<AdvanceSearch> {
                               Navigator.pop(
                                   context,
                                   CarSearch(carMaker, carClass, type, price,
-                                      from, to, city));
+                                      from, to, city,sort));
                             },
                           ),
                         ),

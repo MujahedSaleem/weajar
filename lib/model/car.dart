@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class CarImage {
-  final int ImageStatus;
+  int ImageStatus;
   final int ID;
   final int CarID;
   final String ImageURL;
@@ -24,7 +24,7 @@ class CarImage {
       UpdateDate: DateTime.parse(jsonImage['UpdateDate']),
     );
   }
-  Map toJson() => {'ImageStatus': this.ImageStatus, 'ImageURL': this.ImageURL};
+  Map toJson() => {'ImageStatus': this.ImageStatus, 'ImageURL': this.ImageURL,'ID':this.ID,'CarID':this.CarID};
 }
 
 class Car {
@@ -109,7 +109,6 @@ class Car {
             .map((e) => JsonEncoder().convert(e.toJson()))
             .toList()
       };
-  String toJsonString()=>'{"Model": "${this.Model}","InsuranceType": "${this.InsuranceType}","Seats": ${this.Seats},"CityID": "${this.CityID}","Status": "${this.Status}","WithDelivery": "${this.WithDelivery}","IsPrime": ${this.IsPrime},"DrivingLicense": "${this.DrivingLicense}","Price": ${this.Price},"MinimumAge": ${this.MinimumAge},"InsuranceAmount": ${this.InsuranceAmount},"CarMakeID": ${this.CarMakeID},"CarClassID": ${this.CarClassID},"UserID": 1,"CarImages": ${this.CarImages.map((e) => JsonEncoder().convert(e.toJson())).toList()}}';
-
-
+  String toJsonString() =>
+      '{"ID":${this.ID},"Model": "${this.Model}","InsuranceType": "${this.InsuranceType}","Seats": ${this.Seats},"CityID": "${this.CityID}","Status": "${this.Status}","WithDelivery": "${this.WithDelivery}","IsPrime": ${this.IsPrime},"DrivingLicense": "${this.DrivingLicense}","Price": ${this.Price},"MinimumAge": ${this.MinimumAge},"InsuranceAmount": ${this.InsuranceAmount},"CarMakeID": ${this.CarMakeID},"CarClassID": ${this.CarClassID},"UserID": ${this.UserID},"CarImages": ${this.CarImages.map((e) => JsonEncoder().convert(e.toJson())).toList()}}';
 }

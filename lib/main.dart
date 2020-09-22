@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:weajar/Pages/Aboutus.dart';
 import 'package:weajar/Pages/ContactUs.dart';
+import 'package:weajar/Pages/EditCar.dart';
 import 'package:weajar/Pages/SplashScreen.dart';
 import 'package:weajar/Pages/login.dart';
 import 'package:weajar/Pages/profile.dart';
@@ -42,6 +43,7 @@ class MainApp extends StatelessWidget {
         ResetPassword.routeName: (BuildContext context) => ResetPassword(),
         Registration.routeName: (BuildContext context) => Registration(),
         ContactUs.routeName: (BuildContext context) => ContactUs(),
+        EditCar.routeName: (BuildContext context) => EditCar(),
       },
 
     );

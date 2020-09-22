@@ -18,31 +18,33 @@ class CarList extends StatelessWidget {
   final RefreshCallback onRefresh;
   final Color color;
   final Color fontColor;
+   VoidCallback needload;
+
   CarList(
       {Key key,
       this.carList,
       this.onRefresh,
       this.color,
+      this.needload,
       this.fontColor = Colors.black})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var _carlist = carList;
-    _carlist.sort((item, item2) => item.compareTo(item2));
     return RefreshIndicator(
         onRefresh: onRefresh,
         child: ListView.builder(
             itemCount: _carlist.length,
             itemBuilder: (BuildContext context, int index) {
               return cardCart(
-                  _carlist[index], Colors.white, context, color, fontColor);
+                  _carlist[index], Colors.white, context, color, fontColor,needload);
             }));
   }
 }
 
 Widget cardCart(FullCarInfo car, Color colorFondo, BuildContext context,
-    Color color, Color fontColor) {
+    Color color, Color fontColor,VoidCallback needload) {
   var repo = Repo();
   var stack = Stack(
     children: [
@@ -73,7 +75,6 @@ Widget cardCart(FullCarInfo car, Color colorFondo, BuildContext context,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-
                         textWithPadding('${car.CarMake}',
                             vertical: 9, color: Colors.red, fontSize: 20),
                         textWithPadding('${car.CarClass}', color: fontColor),
@@ -98,10 +99,14 @@ Widget cardCart(FullCarInfo car, Color colorFondo, BuildContext context,
                   ))
             ],
           ),
-          onTap: () {
+          onTap: () async {
             FocusScope.of(context).unfocus();
-            Navigator.pushNamed(context, WeCarDetails.routeName,
+            var result = await Navigator.pushNamed(
+                context, WeCarDetails.routeName,
                 arguments: car);
+            if (result != null) {
+              needload();
+            }
           })
     ],
   );
@@ -149,20 +154,31 @@ Widget cardCart(FullCarInfo car, Color colorFondo, BuildContext context,
         bottom: 0,
         top: 70,
         child: Booked()));
-  
+
   var carImage = car.CarImages != null && car.CarImages.length > 0
       ? Image.network(
-    'https://api.weajar.com/img/${car.CarImages[0].ImageURL}',
-    fit: BoxFit.fitWidth,)
+          'https://api.weajar.com/img/${car.CarImages[0].ImageURL}',
+          fit: BoxFit.fitWidth,
+        )
       : Image.asset("assets/Img/weAjar.png",
-      width: 110, height: 82, fit: BoxFit.fill);
+          width: 110, height: 82, fit: BoxFit.fill);
   var CarDetails = InkWell(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [textWithPadding(car.CarMake,
-              weight: FontWeight.bold, fontSize: 24, color: Colors.red[800]),Icon(Icons.arrow_forward_ios,color: Colors.red,)],)
-          ,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              textWithPadding(car.CarMake,
+                  weight: FontWeight.bold,
+                  fontSize: 24,
+                  color: Colors.red[800]),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.red,
+              )
+            ],
+          ),
           textWithPadding(car.CarClass,
               vertical: 5, fontSize: 18, color: fontColor ?? Colors.black),
           SizedBox(
@@ -183,7 +199,7 @@ Widget cardCart(FullCarInfo car, Color colorFondo, BuildContext context,
                   child: ClipRRect(
                     clipBehavior: Clip.hardEdge,
                     borderRadius: BorderRadius.circular(7),
-                    child:carImage ,
+                    child: carImage,
                   )),
               SizedBox(
                 width: 10,
@@ -206,7 +222,8 @@ Widget cardCart(FullCarInfo car, Color colorFondo, BuildContext context,
                     children: [
                       Image.asset('assets/Img/location.png',
                           height: 30, color: fontColor ?? Colors.black),
-                      textWithPadding('${repo.allCity.firstWhere((element) => element.ID==car.City).NameEn}',
+                      textWithPadding(
+                          '${repo.allCity.firstWhere((element) => element.ID == car.City).NameEn}',
                           color: fontColor ?? Colors.black)
                     ],
                   )
@@ -241,15 +258,20 @@ Widget cardCart(FullCarInfo car, Color colorFondo, BuildContext context,
                   height: 50,
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('assets/Img/Booked.png'))),
+                          image: AssetImage('assets/Img/booked.png'))),
                 ),
             ],
           )
         ],
       ),
-      onTap: () {
+      onTap: () async {
         FocusScope.of(context).unfocus();
-        Navigator.pushNamed(context, WeCarDetails.routeName, arguments: car);
+        var result = await Navigator.pushNamed(
+            context, WeCarDetails.routeName,
+            arguments: car);
+        if (result != null) {
+          needload();
+        }
       });
 
   return Container(

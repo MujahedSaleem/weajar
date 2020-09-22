@@ -6,5 +6,6 @@ class CarSearch {
   String from;
   String to;
   int city;
-  CarSearch(this.carMaker,this. carClass, this.type, this.price, this.from, this.to, this.city);
+  int sort;
+  CarSearch(this.carMaker,this. carClass, this.type, this.price, this.from, this.to, this.city,this.sort);
 }
