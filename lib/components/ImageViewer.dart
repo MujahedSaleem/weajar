@@ -79,7 +79,7 @@ class _ImageViewrState extends State<ImageViewr> {
                           )),
               ),
             ),
-            if (image != null && (_networkImgae == "delete" ||_networkImgae == null))
+            if (image != null || (_networkImgae != "delete" && _networkImgae != null))
               Positioned(
                 child: IconButton(
                   onPressed: () {

@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weajar/Pages/EditCar.dart';
 import 'package:weajar/Repo.dart';
+import 'package:weajar/Utils/General.dart';
 import 'package:weajar/components/AppBar.dart';
 import 'package:weajar/components/CustomButton.dart';
 import 'package:weajar/components/CustomCursoul.dart';
+import 'package:weajar/components/Loader.dart';
 import 'package:weajar/components/textWithPadding.dart';
 import 'package:weajar/generated/l10n.dart';
 import 'package:weajar/model/car.dart';
@@ -27,6 +29,7 @@ class _WeCarDetailsState extends State<WeCarDetails> {
   static const String email = "E-mail";
   static const String map = "map";
   bool isOnDelete = true;
+  bool isOnEdit = false;
   final repo = Repo();
   final _itemFetcher = ItemFetcher();
   var auth = AuthenticationService();
@@ -87,6 +90,9 @@ class _WeCarDetailsState extends State<WeCarDetails> {
               width: MediaQuery.of(context).size.width,
               child: SingleChildScrollView(
                   child: Column(children: [
+                    if(isOnEdit)
+                      Loader(),
+                if(!isOnEdit)
                 Column(
                   children: [
                     Padding(
@@ -395,7 +401,7 @@ class _WeCarDetailsState extends State<WeCarDetails> {
                       SizedBox(
                         height: 10,
                       ),
-                    if (!auth.IsTokenNotActive())
+                    if (!auth.IsTokenNotActive()&& canEditCar(car.ID))
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -403,7 +409,7 @@ class _WeCarDetailsState extends State<WeCarDetails> {
                             height: 50,
                             minWidth: MediaQuery.of(context).size.width * 0.8,
                             child: RaisedButton(
-                              color: Color.fromARGB(200, 18, 65, 206),
+                              color: Color(0xFF14B1CE),
                               child: Text(
                                 S.of(context).edit,
                                 style: TextStyle(
@@ -412,7 +418,7 @@ class _WeCarDetailsState extends State<WeCarDetails> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50),
                                   side: BorderSide(
-                                      color: Color.fromARGB(200, 18, 65, 206))),
+                                      color: Color(0xFF14B1CE))),
                               onPressed: () async {
                                 Car carfull = repo.fullCarInfo
                                     .firstWhere((e) => e.ID == car.ID);
@@ -421,18 +427,26 @@ class _WeCarDetailsState extends State<WeCarDetails> {
                                   'carMaker': repo.CarMakers,
                                   'car': carfull
                                 });
+                                setState(() {
+                                  this.isOnEdit = true;
+                                });
                                 if (result != null) {
                                   var success =  await _itemFetcher.UpdateCar(result);
                                   if (success is bool && !success) {
+                                    this.isOnEdit = false;
+
                                     Scaffold.of(context).showSnackBar(SnackBar(
                                       content: Text("Something went wrong"),
                                     ));
                                   } else {
                                     setState(() {
+                                      this.isOnEdit = false;
+
                                       var e = success as Car;
-                                     Car carc =  repo.fullCarInfo
+                                     final  carc =  repo.fullCarInfo
                                           .firstWhere((e) => e.ID == e.ID);
-                                      carc = e;
+                                     int index = repo.fullCarInfo.indexOf(carc);
+                                      repo.fullCarInfo[index] = e;
                                       var carMake = repo.CarMakers.firstWhere(
                                           (element) =>
                                               element.ID == e.CarMakeID);
@@ -463,20 +477,25 @@ class _WeCarDetailsState extends State<WeCarDetails> {
                                     });
                                   }
                                 }
+                                else{
+                                  setState(() {
+                                    this.isOnEdit = false;
+                                  });
+                                }
                               },
                             ),
                           )
                         ],
                       ),
-                    if (!auth.IsTokenNotActive())
+                    if (!auth.IsTokenNotActive()&& canEditCar(car.ID))
                       SizedBox(
                         height: 10,
                       ),
-                    if (!auth.IsTokenNotActive())
+                    if (!auth.IsTokenNotActive()&& canEditCar(car.ID))
                       SizedBox(
                         height: 10,
                       ),
-                    if (!auth.IsTokenNotActive())
+                    if (!auth.IsTokenNotActive()&& canEditCar(car.ID))
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -501,7 +520,7 @@ class _WeCarDetailsState extends State<WeCarDetails> {
                           )
                         ],
                       ),
-                    if (!auth.IsTokenNotActive())
+                    if (!auth.IsTokenNotActive()&& canEditCar(car.ID))
                       SizedBox(
                         height: 10,
                       ),
@@ -510,7 +529,9 @@ class _WeCarDetailsState extends State<WeCarDetails> {
               ])));
         })));
   }
-
+  canEditCar(int carId){
+    return repo.fullCarInfo.firstWhere((e) => e.ID == carId,orElse: () => null) != null;
+  }
   showAlertDialog(BuildContext context, FullCarInfo car) {
     // set up the buttons
     Widget cancelButton = FlatButton(
@@ -583,18 +604,5 @@ class _WeCarDetailsState extends State<WeCarDetails> {
     }
   }
 
-  String getCarType(int seats) {
-    switch (seats) {
-      case 5:
-        return 'Hatchback';
-      case 4:
-        return 'Coupe';
-      case 3:
-        return 'SUV';
-      case 2:
-        return 'Sedan';
-      case 1:
-        return 'Cross over';
-    }
-  }
+
 }

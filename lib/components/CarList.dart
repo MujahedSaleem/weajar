@@ -5,6 +5,7 @@ import 'package:flutter/painting.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:weajar/Pages/weCarDetails.dart';
 import 'package:weajar/Repo.dart';
+import 'package:weajar/Utils/General.dart';
 import 'package:weajar/components/Booked.dart';
 import 'package:weajar/components/HorzLineDivider.dart';
 import 'package:weajar/components/VerLineDivider.dart';
@@ -18,7 +19,7 @@ class CarList extends StatelessWidget {
   final RefreshCallback onRefresh;
   final Color color;
   final Color fontColor;
-   VoidCallback needload;
+  VoidCallback needload;
 
   CarList(
       {Key key,
@@ -37,14 +38,14 @@ class CarList extends StatelessWidget {
         child: ListView.builder(
             itemCount: _carlist.length,
             itemBuilder: (BuildContext context, int index) {
-              return cardCart(
-                  _carlist[index], Colors.white, context, color, fontColor,needload);
+              return cardCart(_carlist[index], Colors.white, context, color,
+                  fontColor, needload);
             }));
   }
 }
 
 Widget cardCart(FullCarInfo car, Color colorFondo, BuildContext context,
-    Color color, Color fontColor,VoidCallback needload) {
+    Color color, Color fontColor, VoidCallback needload) {
   var repo = Repo();
   var stack = Stack(
     children: [
@@ -175,14 +176,18 @@ Widget cardCart(FullCarInfo car, Color colorFondo, BuildContext context,
                   color: Colors.red[800]),
               Icon(
                 Icons.arrow_forward_ios,
-                color: Colors.red,
+                color: Colors.red[800],
               )
             ],
           ),
           textWithPadding(car.CarClass,
               vertical: 5, fontSize: 18, color: fontColor ?? Colors.black),
-          SizedBox(
-            height: 10,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              textWithPadding('${car.Price.floor()} ${S.of(context).aedday}',
+                  fontSize: 16, color: Colors.red[800])
+            ],
           ),
           HorzLineDivider(
             color: Colors.grey[200],
@@ -194,80 +199,92 @@ Widget cardCart(FullCarInfo car, Color colorFondo, BuildContext context,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                  height: 120,
+                  height: 100,
                   width: 120,
                   child: ClipRRect(
                     clipBehavior: Clip.hardEdge,
                     borderRadius: BorderRadius.circular(7),
-                    child: carImage,
+                    child: Stack(
+                      children: [
+                        carImage,
+                        if (car.IsPrime)
+                          Positioned(
+                            child: Image.asset(
+                              'assets/Img/premium.png',
+                              height: 30,
+                            ),
+                          )
+                      ],
+                    ),
                   )),
               SizedBox(
                 width: 10,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Row(
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(children: [
+                          Image.asset('assets/Img/calendar.png',
+                              height: 30, color: fontColor ?? Colors.black),
+                          textWithPadding('${car.Model}',
+                              color: fontColor ?? Colors.black),
+                        ]),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Row(children: [
+                          Image.asset('assets/Img/location.png',
+                              height: 30, color: fontColor ?? Colors.black),
+                          textWithPadding(
+                              '${repo.allCity.firstWhere((element) => element.ID == car.City).NameEn}',
+                              color: fontColor ?? Colors.black),
+                        ])
+                      ]),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset('assets/Img/calendar.png',
-                          height: 30, color: fontColor ?? Colors.black),
-                      textWithPadding('${car.Model}',
-                          color: fontColor ?? Colors.black)
+                      Row(children: [
+                        SizedBox(
+                          width: 12,
+                        ),
+                        if (car.Seats != null)
+                          Image.asset('assets/Img/car.png', height: 25),
+                        if (car.Seats != null)
+                          SizedBox(
+                            width: 5,
+                          ),
+                        if (car.Seats != null)
+                          textWithPadding('${getCarType(car.Seats)}',
+                              color: fontColor ?? Colors.black),
+                      ]),
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 12,
+                          ),
+                          Image.asset('assets/Img/person.png',
+                              height: 30, color: fontColor ?? Colors.black),
+                          textWithPadding(
+                              '${car.MinimumAge} ${S.of(context).yer}',
+                              color: fontColor ?? Colors.black),
+                        ],
+                      )
                     ],
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset('assets/Img/location.png',
-                          height: 30, color: fontColor ?? Colors.black),
-                      textWithPadding(
-                          '${repo.allCity.firstWhere((element) => element.ID == car.City).NameEn}',
-                          color: fontColor ?? Colors.black)
-                    ],
-                  )
                 ],
               ),
             ],
           ),
-          SizedBox(
-            height: 10,
-          ),
-          HorzLineDivider(
-            color: Colors.grey[200],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              textWithPadding('${car.Price.floor()} ${S.of(context).aedday}',
-                  fontSize: 16, vertical: 14, color: Colors.red[800]),
-              if (car.IsPrime) VerLineDivider(),
-              if (car.IsPrime)
-                Container(
-                  width: 80,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/Img/premium.png'))),
-                ),
-              if (car.Status == 0) VerLineDivider(),
-              if (car.Status == 0)
-                Container(
-                  width: 80,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/Img/booked.png'))),
-                ),
-            ],
-          )
         ],
       ),
       onTap: () async {
         FocusScope.of(context).unfocus();
-        var result = await Navigator.pushNamed(
-            context, WeCarDetails.routeName,
+        var result = await Navigator.pushNamed(context, WeCarDetails.routeName,
             arguments: car);
         if (result != null) {
           needload();
@@ -276,7 +293,7 @@ Widget cardCart(FullCarInfo car, Color colorFondo, BuildContext context,
 
   return Container(
       margin: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
           color: color ?? Colors.white,
           borderRadius: BorderRadius.circular(10)),

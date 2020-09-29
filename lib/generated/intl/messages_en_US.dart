@@ -114,6 +114,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "type" : MessageLookupByLibrary.simpleMessage("Type"),
     "userName" : MessageLookupByLibrary.simpleMessage("User Name"),
     "whatsapp" : MessageLookupByLibrary.simpleMessage("Whatsapp"),
+    "yer" : MessageLookupByLibrary.simpleMessage("Year"),
     "yes" : MessageLookupByLibrary.simpleMessage("Yes")
   };
 }

@@ -111,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "type" : MessageLookupByLibrary.simpleMessage("النوع "),
     "userName" : MessageLookupByLibrary.simpleMessage("أسم المستخدم"),
     "whatsapp" : MessageLookupByLibrary.simpleMessage("واتس آب"),
+    "yer" : MessageLookupByLibrary.simpleMessage("سنة"),
     "yes" : MessageLookupByLibrary.simpleMessage("نعم")
   };
 }

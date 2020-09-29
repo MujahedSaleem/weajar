@@ -23,7 +23,7 @@ dependencies:
   jwt_decoder: ^1.0.1
   mime_type: ^0.3.2
   custom_splash: ^0.0.2
-
+  flare_splash_screen: ^2.0.1+2
 
   image_picker:
   connectivity:

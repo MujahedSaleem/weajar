@@ -636,18 +636,18 @@ List<String> networkImages;
                                 else
                                   Navigator.pop(context);
                               },
-                              color: Color(0xffED3826),
+                              color: Color(0xFF14B1CE),
                               child: Padding(
                                 padding: EdgeInsets.all(15),
                                 child: Text(
-                                  S.of(context).edit,
+                                  S.of(context).save,
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 18),
                                 ),
                               ),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50),
-                                  side: BorderSide(color: Color(0xffED3826))),
+                                  side: BorderSide(color: Color(0xFF14B1CE))),
                             ),
                             SizedBox(
                               height: 10,

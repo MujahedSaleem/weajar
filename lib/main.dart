@@ -4,7 +4,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:weajar/Pages/Aboutus.dart';
 import 'package:weajar/Pages/ContactUs.dart';
 import 'package:weajar/Pages/EditCar.dart';
-import 'package:weajar/Pages/SplashScreen.dart';
 import 'package:weajar/Pages/login.dart';
 import 'package:weajar/Pages/profile.dart';
 import 'package:weajar/Pages/registration.dart';
@@ -13,8 +12,8 @@ import 'package:weajar/Pages/weCarDetails.dart';
 import 'package:weajar/generated/l10n.dart';
 import 'Pages/AddNewCar.dart';
 import 'Pages/AdvanceSearch.dart';
-
 import 'Pages/EditProfile.dart';
+import 'Pages/SplashScreen.dart';
 import 'Pages/weCarList.dart';
 
 void main() => runApp(MainApp());
@@ -30,7 +29,10 @@ class MainApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
-      home: SplashScreen(),
+      home:
+
+      SplashScreen(),
+
       routes: {
         WeCarList.routeName: (BuildContext context) => WeCarList(),
         WeCarDetails.routeName: (BuildContext context) => WeCarDetails(),
