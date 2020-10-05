@@ -29,10 +29,7 @@ class MainApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate
       ],
-      home:
-
-      SplashScreen(),
-
+      home:SplashScreen(),
       routes: {
         WeCarList.routeName: (BuildContext context) => WeCarList(),
         WeCarDetails.routeName: (BuildContext context) => WeCarDetails(),
